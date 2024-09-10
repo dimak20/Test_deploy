@@ -5,12 +5,14 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import UpdateView
 
-from employees.forms import EmployeeInvitationForm, EmployeeCreationForm
-from employees.models import Invitation
+from employees.forms import EmployeeInvitationForm, EmployeeCreationForm, EmployeeUpdateForm
+from employees.models import Invitation, Employee
 
 
 class EmployeeInvitationView(View):
@@ -65,3 +67,9 @@ class EmployeeRegisterView(View):
             invitation.save()
             return redirect("/")
         return render(request, "employees/employee_register.html", {"form": form})
+
+
+class EmployeeUpdateView(UpdateView):
+    model = Employee
+    form_class = EmployeeUpdateForm
+    template_name = "employees/employee_update.html"

@@ -27,4 +27,4 @@ class Invitation(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
-    members = models.ManyToManyField(get_user_model(), related_name='teams')
+    members = models.ManyToManyField(get_user_model(), related_name="teams")
