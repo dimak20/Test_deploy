@@ -18,7 +18,7 @@ class Employee(AbstractUser):
 
 
 class Invitation(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     invited_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
