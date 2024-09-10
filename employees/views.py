@@ -2,12 +2,15 @@ import random
 import string
 
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
-from employees.forms import EmployeeInvitationForm
+from employees.forms import EmployeeInvitationForm, EmployeeCreationForm
+from employees.models import Invitation
 
 
 class EmployeeInvitationView(View):
@@ -36,3 +39,29 @@ class EmployeeInvitationView(View):
 
             messages.success(request, "Invitation sent successfully")
             return redirect("/")
+
+
+class EmployeeRegisterView(View):
+    def get(self, request, invitation_id):
+        invitation = get_object_or_404(Invitation, pk=invitation_id)
+        form = EmployeeCreationForm()
+        return render(
+            request,
+            "employees/employee_register.html",
+            {"form": form, "invitation": invitation},
+        )
+
+    def post(self, request: HttpRequest, invitation_id) -> HttpResponse:
+        invitation = get_object_or_404(Invitation, pk=invitation_id)
+        form = EmployeeCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.position = invitation.position
+            user.email = invitation.email
+            user.username = invitation.email.split("@")[0]
+            user.save()
+            login(request, user)
+            invitation.is_accepted = True
+            invitation.save()
+            return redirect("/")
+        return render(request, "employees/employee_register.html", {"form": form})
