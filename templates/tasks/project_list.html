@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Projects</h1>
+  {% for project in project_list %}
+    <h4>{{ project.name }}</h4>
+    {% for task in project.tasks.all %}
+      <p>{{ task.name }}</p>
+      {% endfor %}
+  {% endfor %}
+{% endblock %}

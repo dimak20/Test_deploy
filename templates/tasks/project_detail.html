@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}  
+  {% for task in project.tasks.all %}
+    {{ task }}
+  {% endfor %}
+{% endblock %}
