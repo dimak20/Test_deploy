@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
+from django_extensions.db.fields import AutoSlugField
 
 
 class Position(models.Model):
@@ -12,9 +15,16 @@ class Position(models.Model):
 
 class Employee(AbstractUser):
     position = models.ForeignKey("Position", on_delete=models.CASCADE)
+    slug = AutoSlugField(
+        populate_from=["username", "first_name", "last_name"],
+        unique=True
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_absolute_url(self):
+        return reverse("employees:detail", kwargs={"slug": self.slug})
 
 
 class Invitation(models.Model):
@@ -23,6 +33,7 @@ class Invitation(models.Model):
     invited_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     is_accepted = models.BooleanField(default=False)
+    slug = AutoSlugField(populate_from=["position", "created_at"], unique=True)
 
 
 class Team(models.Model):

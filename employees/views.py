@@ -10,10 +10,16 @@ from django.core.mail import send_mail
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views import View
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView
 
-from employees.forms import EmployeeInvitationForm, EmployeeCreationForm, EmployeeUpdateForm, EmployeeAuthenticationForm
+from employees.forms import (
+    EmployeeInvitationForm,
+    EmployeeCreationForm,
+    EmployeeUpdateForm,
+    EmployeeAuthenticationForm,
+)
 from employees.models import Invitation, Employee
 
 
@@ -35,7 +41,7 @@ class EmployeeInvitationView(View):
 
             send_mail(
                 "You have been invited!",
-                f"You have been invited to join. Your login password is: {generic_password}",
+                f"You have been invited to join. Proceed to {reverse('employees:employee-register', args={invitation.slug})}",
                 "from@example.com",
                 [invitation.email],
                 fail_silently=False,
@@ -46,8 +52,8 @@ class EmployeeInvitationView(View):
 
 
 class EmployeeRegisterView(View):
-    def get(self, request, invitation_id):
-        invitation = get_object_or_404(Invitation, pk=invitation_id)
+    def get(self, request, invitation_slug):
+        invitation = get_object_or_404(Invitation, slug=invitation_slug)
         form = EmployeeCreationForm()
         return render(
             request,
@@ -55,8 +61,8 @@ class EmployeeRegisterView(View):
             {"form": form, "invitation": invitation},
         )
 
-    def post(self, request: HttpRequest, invitation_id) -> HttpResponse:
-        invitation = get_object_or_404(Invitation, pk=invitation_id)
+    def post(self, request: HttpRequest, invitation_slug) -> HttpResponse:
+        invitation = get_object_or_404(Invitation, slug=invitation_slug)
         form = EmployeeCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -64,6 +70,7 @@ class EmployeeRegisterView(View):
             user.email = invitation.email
             user.username = invitation.email.split("@")[0]
             user.save()
+            user.backend = "employees.backends.EmailBackend"
             login(request, user)
             invitation.is_accepted = True
             invitation.save()
@@ -86,7 +93,20 @@ class EmployeeLoginView(LoginView):
 
         return super(EmployeeLoginView, self).form_valid(form)
 
+
 class EmployeeUpdateView(UpdateView):
     model = Employee
     form_class = EmployeeUpdateForm
     template_name = "employees/employee_update.html"
+
+
+class EmployeeDeleteView(DeleteView):
+    model = Employee
+    success_url = "/"
+
+    def delete(self, request, *args, **kwargs):
+        employee = self.get_object()
+
+        Invitation.objects.filter(email=employee.email).delete()
+
+        return super(EmployeeDeleteView, self).delete(request, *args, **kwargs)
