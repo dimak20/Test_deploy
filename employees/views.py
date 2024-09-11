@@ -4,23 +4,22 @@ import string
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
-from django.views.generic import UpdateView, DeleteView
+from django.views.generic import UpdateView, DeleteView, ListView, CreateView
 
 from employees.forms import (
     EmployeeInvitationForm,
     EmployeeCreationForm,
     EmployeeUpdateForm,
     EmployeeAuthenticationForm,
+    TeamForm,
 )
-from employees.models import Invitation, Employee
+from employees.models import Invitation, Employee, Team
 
 
 class EmployeeInvitationView(View):
@@ -110,3 +109,32 @@ class EmployeeDeleteView(DeleteView):
         Invitation.objects.filter(email=employee.email).delete()
 
         return super(EmployeeDeleteView, self).delete(request, *args, **kwargs)
+
+
+class TeamListView(ListView):
+    model = Team
+
+
+class TeamCreateView(CreateView):
+    model = Team
+    form_class = TeamForm
+    template_name = "employees/team_form.html"
+    success_url = "/"
+
+
+class TeamUpdateView(UpdateView):
+    model = Team
+    form_class = TeamForm
+    template_name = "employees/team_form.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamUpdateView, self).get_context_data(**kwargs)
+        team = Team.objects.get(slug=self.kwargs["slug"])
+        context["form"] = TeamForm(initial={"name": team.name, "members": team.members.all()})
+        return context
+
+
+class TeamDeleteView(DeleteView):
+    model = Team
+    success_url = "/"

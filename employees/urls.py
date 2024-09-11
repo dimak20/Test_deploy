@@ -6,6 +6,10 @@ from employees.views import (
     EmployeeLoginView,
     EmployeeUpdateView,
     EmployeeDeleteView,
+    TeamListView,
+    TeamCreateView,
+    TeamUpdateView,
+    TeamDeleteView,
 )
 
 app_name = "employees"
@@ -28,4 +32,8 @@ urlpatterns = [
         EmployeeDeleteView.as_view(),
         name="employee-delete",
     ),
+    path("teams/", TeamListView.as_view(), name="team-list"),
+    path("teams/create/", TeamCreateView.as_view(), name="team-create"),
+    path("teams/<slug:slug>/update", TeamUpdateView.as_view(), name="team-update"),
+    path("teams/<slug:slug>/delete", TeamDeleteView.as_view(), name="team-delete"),
 ]

@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django_select2.forms import Select2MultipleWidget
 
-from employees.models import Invitation, Employee
+from employees.models import Invitation, Employee, Team
 
 
 class EmployeeInvitationForm(forms.ModelForm):
@@ -24,3 +26,12 @@ class EmployeeUpdateForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = ["position"]
+
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ["name", "members"]
+        widgets = {
+            "members": Select2MultipleWidget(),
+        }
