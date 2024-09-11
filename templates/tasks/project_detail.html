@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}  
-  {% for task in project.tasks.all %}
+  <form action="" method="get">
+  {{ search_form.as_p }}
+  <input type="submit" value="Search">
+  </form>
+  {% for task in tasks %}
     {{ task }}
   {% endfor %}
 {% endblock %}
