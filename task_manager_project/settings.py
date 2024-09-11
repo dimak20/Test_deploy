@@ -80,6 +80,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "task_manager_project.wsgi.application"
 
+SESSION_COOKIE_AGE = 604800
+
+AUTHENTICATION_BACKENDS = [
+    "employees.backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

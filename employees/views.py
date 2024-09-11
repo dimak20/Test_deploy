@@ -1,9 +1,11 @@
 import random
 import string
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -11,7 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import UpdateView
 
-from employees.forms import EmployeeInvitationForm, EmployeeCreationForm, EmployeeUpdateForm
+from employees.forms import EmployeeInvitationForm, EmployeeCreationForm, EmployeeUpdateForm, EmployeeAuthenticationForm
 from employees.models import Invitation, Employee
 
 
@@ -68,6 +70,21 @@ class EmployeeRegisterView(View):
             return redirect("/")
         return render(request, "employees/employee_register.html", {"form": form})
 
+
+class EmployeeLoginView(LoginView):
+    form_class = EmployeeAuthenticationForm
+    template_name = "employees/employee_login.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data["remember_me"]
+
+        if remember_me:
+            self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+        else:
+            self.request.session.set_expiry(0)
+
+        return super(EmployeeLoginView, self).form_valid(form)
 
 class EmployeeUpdateView(UpdateView):
     model = Employee
