@@ -11,6 +11,20 @@ class EmployeeInvitationForm(forms.ModelForm):
         model = Invitation
         fields = ["email", "position"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        first_position = self.fields["position"].queryset.first()
+
+        if first_position:
+            self.fields["position"].initial = first_position
+            self.fields["position"].empty_label = None
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if Invitation.objects.filter(email=email).exists():
+            raise forms.ValidationError("An invitation with this email already exists.")
+        return email
+
 
 class EmployeeCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

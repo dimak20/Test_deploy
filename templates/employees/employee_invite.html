@@ -1,8 +1,75 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Invite Employee {% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+
+  {#{% include 'includes/navigation.html' %}#}
+
+{% endblock header %}
+
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-<input type="submit" value="Invite">
-</form>
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+            <div class="card card-plain">
+              <div class="card-header pb-0 text-left">
+                <h4 class="font-weight-bolder">Invite Employee</h4>
+                <p class="mb-0">Enter the email address of the employee you would like to invite</p>
+              </div>
+              <div class="card-body">
+                <form method="post" action="" role="form">
+                  {% csrf_token %}
+
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  <div class="mb-3">
+                    {% if form.email.errors %}
+                      {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <input class="form-control form-control-lg" name="email" placeholder="Email" aria-label="Email"
+                           aria-describedby="email-addon" value="{{ form.email.value|default_if_none:'' }}">
+                  </div>
+
+                  <div class="mb-3">
+                    {% if form.position.errors %}
+                      {% for error in form.position.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <select class="form-select form-control form-control-lg" name="{{ form.position.name }}"
+                            aria-label="Position">
+                      {% for choice in form.position.field.choices %}
+                        <option value="{{ choice.0 }}"
+                                {% if choice.0 == form.position.value %}selected{% endif %}>{{ choice.1 }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Send invitation
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock content %}
+
+{% block footer %}
+
+  {% include 'includes/footer_signin.html' %}
+
+{% endblock footer %}
