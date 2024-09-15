@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django_select2.forms import Select2MultipleWidget
 
-from employees.models import Invitation, Employee, Team
+from employees.models import Invitation, Team
 
 
 class EmployeeInvitationForm(forms.ModelForm):
@@ -14,17 +14,21 @@ class EmployeeInvitationForm(forms.ModelForm):
 
 class EmployeeCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Employee
+        model = get_user_model()
         fields = ["first_name", "last_name", "password1", "password2"]
 
 
 class EmployeeAuthenticationForm(AuthenticationForm):
-    remember_me = forms.BooleanField()
+    remember_me = forms.BooleanField(required=False)
+
+    class Meta(AuthenticationForm):
+        model = get_user_model()
+        fields = ["email", "password", "remember_me"]
 
 
 class EmployeeUpdateForm(forms.ModelForm):
     class Meta:
-        model = Employee
+        model = get_user_model()
         fields = ["position"]
 
 
