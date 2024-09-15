@@ -1,14 +1,12 @@
-import random
-import string
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView, DeleteView, ListView, CreateView
 
@@ -34,13 +32,9 @@ class EmployeeInvitationView(View):
             invitation.invited_by = request.user
             invitation.save()
 
-            generic_password = "".join(
-                random.choices(string.ascii_letters + string.digits, k=8)
-            )
-
             send_mail(
                 "You have been invited!",
-                f"You have been invited to join. Proceed to {reverse('employees:employee-register', args={invitation.slug})}",
+                f"{request.user} has invited you to join. Proceed to {reverse('employees:employee-register', args={invitation.slug})}",
                 "from@example.com",
                 [invitation.email],
                 fail_silently=False,
@@ -48,6 +42,8 @@ class EmployeeInvitationView(View):
 
             messages.success(request, "Invitation sent successfully")
             return redirect("/")
+        else:
+            return render(request, "employees/employee_invite.html", {"form": form})
 
 
 class EmployeeRegisterView(View):
@@ -91,6 +87,26 @@ class EmployeeLoginView(LoginView):
             self.request.session.set_expiry(0)
 
         return super(EmployeeLoginView, self).form_valid(form)
+
+
+class EmployeePasswordResetView(PasswordResetView):
+    template_name = "employees/password_reset.html"
+    email_template_name = "employees/password_reset_email.html"
+    success_url = reverse_lazy("employees:password_reset_done")
+
+
+# class EmployeePasswordResetConfirmView(PasswordResetConfirmView):
+#     template_name = "employees/password_reset_confirm.html"
+#     success_url = reverse_lazy("employees:password_reset_complete")
+
+
+class EmployeePasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = "employees/password_reset_complete.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["login_url"] = reverse("employees:employee-login")
+        return context
 
 
 class EmployeeUpdateView(UpdateView):
