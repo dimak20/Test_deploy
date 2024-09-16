@@ -13,13 +13,19 @@ from employees.views import (
     TeamUpdateView,
     TeamDeleteView,
     EmployeePasswordResetView,
-    EmployeePasswordResetCompleteView
+    EmployeePasswordResetCompleteView,
+    InvitationListView,
 )
 
 app_name = "employees"
 
 urlpatterns = [
+    # Invitations
     path("employees/invite/", EmployeeInvitationView.as_view(), name="employee-invite"),
+    path(
+        "employees/invitations/", InvitationListView.as_view(), name="invitation-list"
+    ),
+    # Authentication
     path(
         "employees/register/<slug:invitation_slug>/",
         EmployeeRegisterView.as_view(),
@@ -34,14 +40,14 @@ urlpatterns = [
     path(
         "employees/password_reset/done/",
         auth_views.PasswordResetDoneView.as_view(
-            template_name="employees/password_reset_done.html"
+            template_name="employees/reset_password/password_reset_done.html"
         ),
         name="password_reset_done",
     ),
     path(
         "employees/password_reset/confirm/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
-            template_name="employees/password_reset_confirm.html",
+            template_name="employees/reset_password/password_reset_confirm.html",
             success_url=reverse_lazy("employees:password_reset_complete"),
         ),
         name="password_reset_confirm",
@@ -51,6 +57,7 @@ urlpatterns = [
         EmployeePasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    # Read-Update-Delete
     path(
         "employees/<slug:slug>/update/",
         EmployeeUpdateView.as_view(),
@@ -61,9 +68,9 @@ urlpatterns = [
         EmployeeDeleteView.as_view(),
         name="employee-delete",
     ),
+    # Teams
     path("teams/", TeamListView.as_view(), name="team-list"),
     path("teams/create/", TeamCreateView.as_view(), name="team-create"),
     path("teams/<slug:slug>/update", TeamUpdateView.as_view(), name="team-update"),
     path("teams/<slug:slug>/delete", TeamDeleteView.as_view(), name="team-delete"),
-    # path("employees/", include("django.contrib.auth.urls"))
 ]

@@ -34,6 +34,9 @@ class Invitation(models.Model):
     is_accepted = models.BooleanField(default=False)
     slug = AutoSlugField(populate_from=["position", "created_at"], unique=True)
 
+    class Meta:
+        ordering = ("-created_at",)
+
 
 class Team(models.Model):
     name = models.CharField(max_length=100)

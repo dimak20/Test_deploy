@@ -1,9 +1,15 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetView,
+    PasswordResetCompleteView,
+)
 from django.core.mail import send_mail
+from django.db.models import Case, When, Q
+from django.forms import IntegerField
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -16,11 +22,12 @@ from employees.forms import (
     EmployeeUpdateForm,
     EmployeeAuthenticationForm,
     TeamForm,
+    InvitationSearchForm,
 )
 from employees.models import Invitation, Employee, Team
 
 
-class EmployeeInvitationView(View):
+class EmployeeInvitationView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest) -> HttpResponse:
         form = EmployeeInvitationForm()
         return render(request, "employees/employee_invite.html", {"form": form})
@@ -41,9 +48,36 @@ class EmployeeInvitationView(View):
             )
 
             messages.success(request, "Invitation sent successfully")
-            return redirect("/")
+            return redirect(reverse("employees:invitation-list"))
         else:
             return render(request, "employees/employee_invite.html", {"form": form})
+
+
+class InvitationListView(ListView):
+    model = Invitation
+    template_name = "employees/invitations/invitation_list.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Invitation.objects.all()
+        form = InvitationSearchForm(self.request.GET)
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+            # Prioritize email over position
+            queryset = Invitation.objects.annotate(
+                email_match=Case(
+                    When(email__icontains=query, then=1),
+                    default=0,
+                ),
+                position_match=Case(
+                    When(position__name__icontains=query, then=1),
+                    default=0,
+                )
+            ).filter(
+                Q(email__icontains=query) | Q(position__name__icontains=query)
+            ).order_by('-email_match', '-position_match')
+
+        return queryset
 
 
 class EmployeeRegisterView(View):
@@ -90,18 +124,13 @@ class EmployeeLoginView(LoginView):
 
 
 class EmployeePasswordResetView(PasswordResetView):
-    template_name = "employees/password_reset.html"
+    template_name = "employees/reset_password/password_reset.html"
     email_template_name = "employees/password_reset_email.html"
     success_url = reverse_lazy("employees:password_reset_done")
 
 
-# class EmployeePasswordResetConfirmView(PasswordResetConfirmView):
-#     template_name = "employees/password_reset_confirm.html"
-#     success_url = reverse_lazy("employees:password_reset_complete")
-
-
 class EmployeePasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = "employees/password_reset_complete.html"
+    template_name = "employees/reset_password/password_reset_complete.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -147,7 +176,9 @@ class TeamUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(TeamUpdateView, self).get_context_data(**kwargs)
         team = Team.objects.get(slug=self.kwargs["slug"])
-        context["form"] = TeamForm(initial={"name": team.name, "members": team.members.all()})
+        context["form"] = TeamForm(
+            initial={"name": team.name, "members": team.members.all()}
+        )
         return context
 
 

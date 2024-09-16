@@ -53,3 +53,11 @@ class TeamForm(forms.ModelForm):
         widgets = {
             "members": Select2MultipleWidget(),
         }
+
+
+class InvitationSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+    )
