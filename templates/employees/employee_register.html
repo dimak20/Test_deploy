@@ -1,8 +1,90 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign in{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+{% endblock header %}
+
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-<input type="submit" value="Register">
-</form>
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+            <div class="card card-plain">
+              <div class="card-header pb-0 text-left">
+                <h4 class="font-weight-bolder">Sign In</h4>
+                <p class="mb-0">Enter your email and password to sign in</p>
+              </div>
+              <div class="card-body">
+                <form method="post" action="" role="form">
+                  {% csrf_token %}
+
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  <div class="mb-3">
+                    {% if form.first_name.errors %}
+                      {% for error in form.first_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <input class="form-control form-control-lg" name="first_name" placeholder="First name"
+                           aria-label="First name"
+                           aria-describedby="first_name-addon" value="{{ form.first_name.value|default_if_none:'' }}">
+                  </div>
+
+                  <div class="mb-3">
+                    {% if form.last_name.errors %}
+                      {% for error in form.last_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <input class="form-control form-control-lg" name="last_name" placeholder="Last name"
+                           aria-label="Last name"
+                           aria-describedby="last_name-addon" value="{{ form.last_name.value|default_if_none:'' }}">
+                  </div>
+                
+                  <div class="mb-3">
+                    {% if form.password1.errors %}
+                      {% for error in form.password1.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <input class="form-control form-control-lg" name="password1" placeholder="Password"
+                           aria-label="Password" aria-describedby="password-addon" type="password">
+                  </div>
+                
+                  <div class="mb-3">
+                    {% if form.password2.errors %}
+                      {% for error in form.password2.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                      {% endfor %}
+                    {% endif %}
+                    <input class="form-control form-control-lg" name="password2" placeholder="Confirm password"
+                           aria-label="Confirm password" aria-describedby="confirm-password-addon" type="password">
+                  </div>
+                
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock content %}
+
+{% block footer %}
+
+  {% include 'includes/footer_signin.html' %}
+
+{% endblock footer %}
