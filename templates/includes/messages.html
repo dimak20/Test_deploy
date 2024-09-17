@@ -1,0 +1,28 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="position-fixed bottom-0 end-0 m-6 toast text-bg-{{ message.tags }}" role="alert"
+         id="toast-{{ forloop.counter }}">
+      <div class="toast-body">
+        <div class="d-flex gap-4">
+          <div class="d-flex flex-grow-1 align-items-center">
+            <span class="fw-semibold">{{ message }}</span>
+            <button type="button"
+                    class="btn-close btn-close-white btn-close-sm ms-auto"
+                    data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% for message in messages %}
+            var toastElement = document.getElementById("toast-{{ forloop.counter }}");
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        {% endfor %}
+    });
+</script>
