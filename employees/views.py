@@ -24,6 +24,7 @@ from employees.forms import (
     TeamForm,
     InvitationSearchForm,
 )
+from employees.mixins import InvitationSearchMixin
 from employees.models import Invitation, Employee, Team
 
 
@@ -53,31 +54,10 @@ class EmployeeInvitationView(LoginRequiredMixin, View):
             return render(request, "employees/employee_invite.html", {"form": form})
 
 
-class InvitationListView(ListView):
+class InvitationListView(InvitationSearchMixin, ListView):
     model = Invitation
     template_name = "employees/invitations/invitation_list.html"
     paginate_by = 5
-
-    def get_queryset(self):
-        queryset = Invitation.objects.all()
-        form = InvitationSearchForm(self.request.GET)
-        if form.is_valid():
-            query = form.cleaned_data["query"]
-            if query:
-                queryset = Invitation.objects.annotate(
-                    email_match=Case(
-                        When(email__icontains=query, then=1),
-                        default=0,
-                    ),
-                    position_match=Case(
-                        When(position__name__icontains=query, then=1),
-                        default=0,
-                    )
-                ).filter(
-                    Q(email__icontains=query) | Q(position__name__icontains=query)
-                ).order_by('-email_match', '-position_match')
-
-        return queryset
 
 
 class EmployeeRegisterView(View):
