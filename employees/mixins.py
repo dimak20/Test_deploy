@@ -7,12 +7,12 @@ from employees.models import Invitation
 
 class InvitationSearchMixin(ListView):
     def get_queryset(self):
-        queryset = Invitation.objects.all()
+        queryset = super().get_queryset()
         form = InvitationSearchForm(self.request.GET)
         if form.is_valid():
             query = form.cleaned_data["query"]
             if query:
-                queryset = Invitation.objects.annotate(
+                queryset = queryset.annotate(
                     email_match=Case(
                         When(email__icontains=query, then=1),
                         default=0,

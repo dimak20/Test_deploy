@@ -1,6 +1,9 @@
+import re
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 
 from employees.models import Team
@@ -48,19 +51,21 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     teams = models.ManyToManyField(Team)
-    start_date = models.DateField(auto_now_add=True)
-    slug = AutoSlugField(populate_from=["name"], unique=True, auto_created=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    slug = AutoSlugField(populate_from=["name"], unique=True)
+
+    class Meta:
+        ordering = ["-created_at", "name"]
 
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        super(Project, self).save(*args, **kwargs)
-
-        start_month = self.start_date.strftime('%m-%Y')
-        if not self.slug.endswith(start_month):
-            self.slug = f"{self.slug}-{start_month}"
-            self.save()
-
     def get_absolute_url(self):
         return reverse("tasks:project-detail", kwargs={"slug": self.slug})
+
+    @staticmethod
+    def slugify_function(content):
+        current_date = timezone.now().strftime("%m-%Y")
+        clean_content = re.sub(r'[^\w\s\-]', '', content)
+        clean_content = clean_content.replace(" ", "-").lower()
+        return f"{clean_content}-{current_date}"

@@ -1,16 +1,40 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.db.models import Case, When, Value, IntegerField, Q
-from django.views import generic
+from django.urls.base import reverse, reverse_lazy
+from django.utils.safestring import mark_safe
+from django.views.generic import View, ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.shortcuts import render
 
-from tasks.forms import TaskSearchForm
+from tasks.forms import TaskSearchForm, ProjectCreateForm
+from tasks.mixins import ProjectSearchMixin
 from tasks.models import Project
 
 
-class ProjectCreateView(generic.CreateView):
+class UserDashboardView(LoginRequiredMixin, View):
+    pass
+
+
+class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     model = Project
-    fields = ("name", "description")
+    paginate_by = 5
 
 
-class ProjectDetailView(generic.DetailView):
+class ProjectCreateView(CreateView):
+    model = Project
+    template_name = "tasks/project_form.html"
+    form_class = ProjectCreateForm
+    success_url = reverse_lazy("tasks:project-list")
+
+    def form_valid(self, form):
+        project = form.save()
+        project_url = reverse("tasks:project-detail", kwargs={"slug": project.slug})
+        message = mark_safe(f"<a style='text-decoration: underline;' href={project_url}>Project</a> created")
+        messages.success(self.request, message)
+        return super().form_valid(form)
+
+
+class ProjectDetailView(DetailView):
     model = Project
     template_name = "tasks/project_detail.html"
 
@@ -45,9 +69,9 @@ class ProjectDetailView(generic.DetailView):
         return context
 
 
-class ProjectUpdateView(generic.UpdateView):
+class ProjectUpdateView(UpdateView):
     model = Project
 
 
-class ProjectDeleteView(generic.DeleteView):
+class ProjectDeleteView(DeleteView):
     model = Project

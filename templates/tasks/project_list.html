@@ -1,10 +1,69 @@
 {% extends "base.html" %}
+{% load static %}
+{% load tasks_filters %}
+
+{% block title %}Project list{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+
+  {% include 'includes/navigation.html' %}
+
+{% endblock header %}
+
 {% block content %}
-  <h1>Projects</h1>
-  {% for project in project_list %}
-    <h4>{{ project.name }}</h4>
-    {% for task in project.tasks.all %}
-      <p>{{ task.name }}</p>
-      {% endfor %}
-  {% endfor %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="font-weight-bolder mb-0">Projects</h4>
+    <form class="d-flex flex-grow-1 mx-6" action="" method="get">
+      <input type="text" name="query" placeholder="Search" class="form-control"
+             value="{{ request.GET.query|default:'' }}">
+    </form>
+    <a href="{% url "tasks:project-create" %}">
+      <button type="button" class="btn btn-primary">
+        Add New Project
+      </button>
+    </a>
+  </div>
+  <table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+    <tr>
+      <th>Project</th>
+      <th>Tasks</th>
+      <th>Teams</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in project_list %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{% url "tasks:project-detail" project.slug %}">
+              {{ project.name }}
+            </a>
+          </div>
+        </td>
+        <td>
+          <p class="fw-normal mb-1 d-flex align-items-center">
+            <span title="Active tasks">
+            {% include "includes/svg/dot.html" with color="green" %}{{ project|get_active_tasks_num }}
+            </span>
+            &nbsp;
+            <span title="Completed tasks">
+            {% include "includes/svg/dot.html" with color="grey" %}{{ project|get_completed_tasks_num }}
+            </span>
+          </p>
+        </td>
+        <td>
+          <p class="fw-normal mb-1">{{ project.teams.all|join:", "|default:"No teams assigned" }}</p>
+        </td>
+      </tr>
+    {% empty %}
+      <p>There are no projects yet.</p>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
+{% block footer %}
+  {% include "includes/messages.html" %}
+  {% include 'includes/scripts.html' %}
+{% endblock footer %}
