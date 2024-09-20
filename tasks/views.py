@@ -6,9 +6,9 @@ from django.utils.safestring import mark_safe
 from django.views.generic import View, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.shortcuts import render
 
-from tasks.forms import TaskSearchForm, ProjectCreateForm
+from tasks.forms import TaskSearchForm, ProjectCreateForm, TaskCreateForm
 from tasks.mixins import ProjectSearchMixin
-from tasks.models import Project
+from tasks.models import Project, Task
 
 
 class UserDashboardView(LoginRequiredMixin, View):
@@ -18,11 +18,12 @@ class UserDashboardView(LoginRequiredMixin, View):
 class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     model = Project
     paginate_by = 5
+    template_name = "tasks/projects/project_list.html"
 
 
 class ProjectCreateView(CreateView):
     model = Project
-    template_name = "tasks/project_form.html"
+    template_name = "tasks/projects/project_form.html"
     form_class = ProjectCreateForm
     success_url = reverse_lazy("tasks:project-list")
 
@@ -36,7 +37,7 @@ class ProjectCreateView(CreateView):
 
 class ProjectDetailView(DetailView):
     model = Project
-    template_name = "tasks/project_detail.html"
+    template_name = "tasks/projects/project_detail.html"
 
     def get_queryset(self):
         queryset = Project.objects.prefetch_related("tasks")
@@ -75,3 +76,20 @@ class ProjectUpdateView(UpdateView):
 
 class ProjectDeleteView(DeleteView):
     model = Project
+
+
+class TaskCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    form_class = TaskCreateForm
+    template_name = "tasks/task_form.html"
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        project_slug = self.kwargs.get("project_slug")
+        task.project = Project.objects.get(slug=project_slug)
+        task.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        project_slug = self.kwargs.get("project_slug")
+        return reverse_lazy("tasks:project-detail", kwargs={"slug": project_slug})

@@ -26,8 +26,10 @@ class Task(models.Model):
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(max_length=100, choices=PRIORITY_CHOICES)
     task_type = models.ForeignKey("TaskType", on_delete=models.RESTRICT)
-    assignees = models.ManyToManyField(get_user_model(), related_name="tasks")
-    tags = models.ManyToManyField("TaskTag")
+    assignees = models.ManyToManyField(get_user_model(), related_name="tasks", blank=True)
+    tags = models.ManyToManyField("TaskTag", blank=True)
+    slug = AutoSlugField(populate_from=["name"], unique=True)
+
 
     def __str__(self):
         return self.name
@@ -62,10 +64,3 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse("tasks:project-detail", kwargs={"slug": self.slug})
-
-    @staticmethod
-    def slugify_function(content):
-        current_date = timezone.now().strftime("%m-%Y")
-        clean_content = re.sub(r'[^\w\s\-]', '', content)
-        clean_content = clean_content.replace(" ", "-").lower()
-        return f"{clean_content}-{current_date}"

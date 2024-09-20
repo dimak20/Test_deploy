@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add task{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+  {% include "includes/navigation.html" %}
+  {% include "includes/scripts.html" %}
+
+{% endblock header %}
+
+{% block content %}
+  <section>
+    <div class="page-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mx-lg-15 mx-auto">
+            <h4 class="font-weight-bolder mb-0  ">Add new task</h4>
+
+            <div class="card card-plain">
+              <div class="card-body">
+                <form method="post" role="form">
+                  {% csrf_token %}
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        {% include "includes/errors/field_errors.html" with field=form.name %}
+                        {{ form.name }}
+                      </div>
+
+                      <div class="mb-3">
+                        {% include "includes/errors/field_errors.html" with field=form.description %}
+                        {{ form.description }}
+                      </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <p class="text-sm text-dark mb-1">Deadline</p>
+                        {% include "includes/errors/field_errors.html" with field=form.deadline %}
+                        {{ form.deadline }}
+                      </div>
+
+                      <div class="mb-3" title="Priority">
+                        <p class="text-sm text-dark mb-1">Priority</p>
+                        {% include "includes/errors/field_errors.html" with field=form.priority %}
+                        {{ form.priority }}
+                      </div>
+
+                      <div class="mb-3" title="Task type">
+                        <p class="text-sm text-dark mb-1">Task type</p>
+                        {% include "includes/errors/field_errors.html" with field=form.task_type %}
+                        {{ form.task_type }}
+                      </div>
+
+                      <div class="mb-3" title="Assignees">
+                        <script>initSelect2("#id_assignees", "Assignees")</script>
+                        <p class="text-sm text-dark mb-1">Assignees</p>
+                        {% include "includes/errors/field_errors.html" with field=form.assignees %}
+                        {{ form.assignees }}
+                      </div>
+
+                      <div class="mb-3" title="Tags">
+                        <script>initSelect2("#id_tags", "Tags")</script>
+                        <p class="text-sm text-dark mb-1">Tags</p>
+                        {% include "includes/errors/field_errors.html" with field=form.tags %}
+                        {{ form.tags }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Create task
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}
+
+{% block footer %}
+
+  {% include 'includes/footer_signin.html' %}
+
+{% endblock footer %}
