@@ -1,8 +1,8 @@
 {% load query_transform %}
 {% if is_paginated %}
-  <div class="row text-center py-2">
+  <div class="fixed-bottom row text-center py-2">
     <div class="col-4 mx-auto">
-      <ul class="pagination pagination-primary m-4">
+      <ul class="pagination pagination-primary justify-content-center m-4">
         {% if page_obj.has_previous %}
           <li class="page-item">
             <a class="page-link" href="?{% query_transform request page=page_obj.previous_page_number %}" aria-label="Previous">

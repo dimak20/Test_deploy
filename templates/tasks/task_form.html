@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Add task{% endblock title %}
+{% block title %}{{ object|yesno:"Edit,Add"}} task{% endblock title %}
 {% block body %} class="sign-in-illustration" {% endblock body %}
 
 {% block header %}
@@ -16,7 +16,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mx-lg-15 mx-auto">
-            <h4 class="font-weight-bolder mb-0  ">Add new task</h4>
+            <h4 class="font-weight-bolder mb-0  ">{{ object|yesno:"Edit,Add new"}} task</h4>
 
             <div class="card card-plain">
               <div class="card-body">
