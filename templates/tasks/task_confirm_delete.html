@@ -18,22 +18,18 @@
           <div class="col-xl-8 col-lg-8 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
             <div class="card card-plain">
               <div class="card-header pb-0 text-left">
-                <h4 class="font-weight-bolder">Delete project</h4>
+                <h4 class="font-weight-bolder">Delete task</h4>
                 <p class="mb-3">Are you sure you want to delete the project?</p>
-                <h5 class="mb-3">{{ project.name }}</h5>
-                <p class="text-danger mb-3">
-                  {% include "includes/svg/exclamation_diamond.html" with color="red" %}
-                  All associated tasks will be deleted together with the project!
-                </p>
+                <h5 class="mb-3">{{ task.name }}</h5>
               </div>
               <div class="card-body">
                 <form method="post" action="" role="form">
                   {% csrf_token %}
-
-                  <button type="submit" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0">Delete Project
+                  <button type="submit" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0">Delete Task
                   </button>
                 </form>
               </div>
+              
             </div>
           </div>
         </div>

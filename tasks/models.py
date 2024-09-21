@@ -1,9 +1,6 @@
-import re
-
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 
 from employees.models import Team
@@ -24,15 +21,17 @@ class Task(models.Model):
     )
     deadline = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
+    completed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL
+    )
     priority = models.CharField(max_length=100, choices=PRIORITY_CHOICES)
     task_type = models.ForeignKey("TaskType", on_delete=models.RESTRICT)
-    assignees = models.ManyToManyField(get_user_model(), related_name="tasks", blank=True)
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks", blank=True)
     tags = models.ManyToManyField("TaskTag", blank=True)
     slug = AutoSlugField(populate_from=["name"], unique=True)
 
     class Meta:
         ordering = ("priority", "-deadline", "name")
-
 
     def __str__(self):
         return self.name

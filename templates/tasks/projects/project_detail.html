@@ -56,7 +56,7 @@
 
         <td>
           <div class="d-flex align-items-center">
-            <a href="#">
+            <a href="{% url "tasks:task-detail" task.slug %}">
               {{ task.name }}
             </a>
           </div>

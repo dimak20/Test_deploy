@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tasks_filters %}
+
+{% block title %}Project list{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+
+  {% include 'includes/navigation.html' %}
+
+{% endblock header %}
+
+{% block content %}
+  <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="font-weight-bolder mb-0" id="toggleDescription"
+          {% if project.description %}style="cursor: pointer;{% endif %}">
+        {{ task.name }}
+      </h4>
+      <div class="d-flex align-items-center">
+        {% if task.is_completed %}
+          <form class="" action="{% url "tasks:toggle-completion" task.slug %}" method="post">
+            {% csrf_token %}
+            <input title="Completed by {{ task.completed_by }}"
+                type="submit" class="btn bg-gradient-warning my-auto" value="Undo completion"/>
+          </form>
+        {% else %}
+          <form class="" action="{% url "tasks:toggle-completion" task.slug %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn bg-gradient-success my-auto" value="Complete"/>
+          </form>
+        {% endif %}
+        <a class="btn bg-gradient-secondary my-auto mx-1" href="{% url "tasks:task-update" task.slug %}">Edit</a>
+        <a class="btn bg-gradient-danger my-auto" href="{% url "tasks:task-delete" task.slug %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mx-lg-15 mx-auto">
+  {% if task.description %}
+    {{ task.description }}
+  {% else %}
+    <p class="text-center">No description provided</p>
+  {% endif %}
+  </div>
+
+{% endblock %}
+{% block footer %}
+  {% include "includes/messages.html" %}
+  {% include 'includes/scripts.html' %}
+{% endblock footer %}

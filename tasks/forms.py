@@ -5,14 +5,14 @@ from django_select2.forms import Select2MultipleWidget
 from tasks.models import Project, Task
 
 
-class ProjectCreateForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ("name", "description", "teams")
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Title"}),
             "description": forms.Textarea(attrs={"placeholder": "Description"}),
-            "teams": Select2MultipleWidget()
+            "teams": Select2MultipleWidget(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -35,7 +35,7 @@ class ProjectSearchForm(forms.Form):
     )
 
 
-class TaskCreateForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     priority = forms.ChoiceField(choices=Task.PRIORITY_CHOICES)
 
     class Meta:
@@ -52,8 +52,8 @@ class TaskCreateForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Title"}),
             "description": forms.Textarea(attrs={"placeholder": "Description"}),
-            "deadline": forms.DateInput(
-                format="%m/%d/%Y", attrs={"type": "datetime-local", "title": "Deadline"}
+            "deadline": forms.DateTimeInput(
+                attrs={"type": "datetime-local", "title": "Deadline"}
             ),
             "assignees": Select2MultipleWidget(),
             "tags": Select2MultipleWidget(),
