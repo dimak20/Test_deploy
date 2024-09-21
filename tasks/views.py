@@ -79,6 +79,7 @@ class ProjectUpdateView(UpdateView):
 
 class ProjectDeleteView(DeleteView):
     model = Project
+    template_name = "tasks/projects/project_confirm_delete.html"
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
