@@ -60,20 +60,21 @@ class ProjectDetailView(DetailView):
         tasks = project.tasks.all()
 
         form = TaskSearchForm(self.request.GET)
-        if form.is_valid():
-            query = form.cleaned_data["query"]
+        if self.request.GET.get("query"):
+            if form.is_valid():
+                query = form.cleaned_data["query"]
 
-            tasks = tasks.filter(
-                Q(name__icontains=query) | Q(description__icontains=query)
-            )
-
-            tasks = tasks.annotate(
-                search_priority=Case(
-                    When(name__icontains=query, then=Value(1)),
-                    When(description__icontains=query, then=Value(2)),
-                    output_field=IntegerField(),
+                tasks = tasks.filter(
+                    Q(name__icontains=query) | Q(description__icontains=query)
                 )
-            ).order_by("search_priority")
+
+                tasks = tasks.annotate(
+                    search_priority=Case(
+                        When(name__icontains=query, then=Value(1)),
+                        When(description__icontains=query, then=Value(2)),
+                        output_field=IntegerField(),
+                    )
+                ).order_by("search_priority")
 
         context["project"] = project
         context["tasks"] = tasks
@@ -104,6 +105,11 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         project_slug = self.kwargs.get("project_slug")
         task.project = Project.objects.get(slug=project_slug)
         task.save()
+        task_url = reverse("tasks:task-detail", kwargs={"slug": task.slug })
+        message = mark_safe(
+            f"<a style='text-decoration: underline;' href={task_url}>Task</a> created"
+        )
+        messages.success(self.request, message)
         return super().form_valid(form)
 
     def get_success_url(self):
