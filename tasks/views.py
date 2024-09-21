@@ -72,6 +72,9 @@ class ProjectDetailView(DetailView):
 
 class ProjectUpdateView(UpdateView):
     model = Project
+    template_name = "tasks/projects/project_form.html"
+    form_class = ProjectCreateForm
+    success_url = reverse_lazy("tasks:project-list")
 
 
 class ProjectDeleteView(DeleteView):

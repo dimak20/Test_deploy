@@ -23,8 +23,21 @@
       </button>
     </a>
   </div>
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="font-weight-bolder mb-0">{{ project.name }}</h4>
+  <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="font-weight-bolder mb-0" id="toggleDescription" style="cursor: pointer;">
+        {{ project.name }} {% include "includes/svg/arrow_down.html" %}
+      </h4>
+      <div>
+        <a class="btn btn-secondary" href="{% url "tasks:project-update" project.slug %}">Edit</a>
+        <a class="btn btn-danger" href="{% url "tasks:project-delete" project.slug %}">Delete</a>
+      </div>
+    </div>
+    <div class="collapse" id="descriptionCollapse">
+      <div class="card card-body">
+        {{ project.description }}
+      </div>
+    </div>
   </div>
   <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
@@ -40,33 +53,61 @@
     <tbody>
     {% for task in tasks %}
       <tr>
+
         <td>
           <div class="d-flex align-items-center">
-            <a href="{% url "tasks:project-detail" project.slug %}">
+            <a href="#">
               {{ task.name }}
             </a>
           </div>
         </td>
+
         <td>
           <p class="fw-normal mb-1 d-flex align-items-center">
-            <span title="Active tasks">
-            {% include "includes/svg/dot.html" with color="green" %}{{ project|get_active_tasks_num }}
-            </span>
-            &nbsp;
-            <span title="Completed tasks">
-            {% include "includes/svg/dot.html" with color="grey" %}{{ project|get_completed_tasks_num }}
-            </span>
+            {% if task.priority == "1" %}
+              {% include "includes/svg/dot.html" with color="red" %} Urgent
+            {% elif task.priority == "2" %}
+              {% include "includes/svg/dot.html" with color="yellow" %} High
+            {% elif task.priority == "3" %}
+              {% include "includes/svg/dot.html" with color="green" %} Medium
+            {% elif task.priority == "4" %}
+              {% include "includes/svg/dot.html" with color="grey" %} Low
+            {% endif %}
           </p>
         </td>
+
         <td>
-          <p class="fw-normal mb-1">{{ project.teams.all|join:", "|default:"No teams assigned" }}</p>
+          <p class="fw-normal mb-1">{{ task.deadline }}</p>
         </td>
+
+        <td>
+          <p class="fw-normal mb-1">{{ task.assignees.all|join:", "|default:"None" }}</p>
+        </td>
+
+        <td>
+          <p class="fw-normal mb-1">{{ task.task_type }}</p>
+        </td>
+
+        <td>
+          <p class="fw-normal mb-1">{{ task.tags.all|join:", "|default:"" }}</p>
+        </td>
+
       </tr>
     {% empty %}
-      <p>There are no projects yet.</p>
+      <p>There are no tasks yet.</p>
     {% endfor %}
     </tbody>
   </table>
+  <script>
+      document.getElementById("toggleDescription").addEventListener("click", function () {
+          var collapseElement = document.getElementById("descriptionCollapse");
+          if (collapseElement.classList.contains("show")) {
+              collapseElement.classList.remove("show");
+          } else {
+              collapseElement.classList.add("show");
+          }
+      });
+  </script>
 {% endblock %}
 {% block footer %}
   {% include "includes/messages.html" %}

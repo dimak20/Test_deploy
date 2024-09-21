@@ -6,14 +6,17 @@
 
 {% block header %}
   {% include "includes/navigation.html" %}
+  {% include "includes/scripts.html" %}
 {% endblock header %}
 
 {% block content %}
+
   <section>
     <div class="page-header">
       <div class="container">
         <div class="row">
-          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+          <div class="col-xl-8 col-lg-8 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+            <h4 class="font-weight-bolder mb-0">Add new project</h4>
             <div class="card card-plain">
               <div class="card-body">
                 <form method="post" action="{% url "tasks:project-create" %}" role="form">
@@ -24,28 +27,35 @@
                     {% endfor %}
                   {% endif %}
 
-                  <div class="mb-3">
-                    {% if form.name.errors %}
-                      {% for error in form.name.errors %}
-                        <span class="text-danger">{{ error }}</span>
-                      {% endfor %}
-                    {% endif %}
-                    <input class="form-control form-control-lg" name="name" placeholder="Title" aria-label="Title"
-                           aria-describedby="text-addon" value="{{ form.name.value|default:'' }}">
-                  </div>
+                  <!-- Start Row for the form fields -->
+                  <div class="row">
+                    <!-- Column for name and description -->
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        {% include "includes/errors/field_errors.html" with field=form.name %}
+                        {{ form.name }}
+                      </div>
 
-                  <div class="mb-3">
-                    {% if form.description.errors %}
-                      {% for error in form.description.errors %}
-                        <span class="text-danger">{{ error }}</span>
-                      {% endfor %}
-                    {% endif %}
-                    <textarea
-                        class="form-control form-control-lg min-vh-45"
-                        name="description" placeholder="Description" aria-label="Description"
-                        aria-describedby="password-addon"></textarea>
+                      <div class="mb-3">
+                        {% include "includes/errors/field_errors.html" with field=form.description %}
+                        {{ form.description }}
+                      </div>
+                    </div>
+
+                    <!-- Column for teams -->
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <p class="text-sm text-dark mb-1">Teams</p>
+                        {% include "includes/errors/field_errors.html" with field=form.teams %}
+                        <script>initSelect2("#id_teams")</script>
+                        {{ form.teams }}
+                      </div>
+                    </div>
                   </div>
-                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Create project
+                  <!-- End Row -->
+
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                    {{ object|yesno:"Update,Create"}} project
                   </button>
                 </form>
               </div>
@@ -55,6 +65,7 @@
       </div>
     </div>
   </section>
+
 {% endblock content %}
 
 {% block footer %}

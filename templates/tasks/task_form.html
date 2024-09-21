@@ -63,14 +63,14 @@
                       </div>
 
                       <div class="mb-3" title="Assignees">
-                        <script>initSelect2("#id_assignees", "Assignees")</script>
+                        <script>initSelect2("#id_assignees")</script>
                         <p class="text-sm text-dark mb-1">Assignees</p>
                         {% include "includes/errors/field_errors.html" with field=form.assignees %}
                         {{ form.assignees }}
                       </div>
 
                       <div class="mb-3" title="Tags">
-                        <script>initSelect2("#id_tags", "Tags")</script>
+                        <script>initSelect2("#id_tags")</script>
                         <p class="text-sm text-dark mb-1">Tags</p>
                         {% include "includes/errors/field_errors.html" with field=form.tags %}
                         {{ form.tags }}
@@ -78,7 +78,8 @@
                     </div>
                   </div>
 
-                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Create task
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                    {{ object|yesno:"Update,Create"}} task
                   </button>
                 </form>
               </div>
@@ -89,6 +90,15 @@
     </div>
   </section>
 
+  <script>
+      window.onload = function () {
+          var nameInput = document.getElementById('id_name');
+          if (nameInput) {
+              nameInput.scrollIntoView({behavior: 'smooth'});
+              nameInput.focus();  // This will also focus on the input field
+          }
+      };
+  </script>
 {% endblock content %}
 
 {% block footer %}

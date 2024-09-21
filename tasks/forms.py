@@ -8,7 +8,23 @@ from tasks.models import Project, Task
 class ProjectCreateForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ("name", "description")
+        fields = ("name", "description", "teams")
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Title"}),
+            "description": forms.Textarea(attrs={"placeholder": "Description"}),
+            "teams": Select2MultipleWidget()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field.widget.attrs.get("class"):
+                field.widget.attrs["class"] += " form-control form-control-lg"
+            else:
+                field.widget.attrs.update({"class": "form-control form-control-lg"})
+
+            if self.errors.get(field_name):
+                field.widget.attrs["class"] += " is-invalid"
 
 
 class ProjectSearchForm(forms.Form):

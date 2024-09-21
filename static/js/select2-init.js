@@ -1,7 +1,6 @@
-function initSelect2(selector, placeholder) {
+function initSelect2(selector) {
     $(document).ready(function() {
         $(selector).select2({
-            placeholder: placeholder,
             allowClear: true,
         });
 
