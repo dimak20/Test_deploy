@@ -11,10 +11,10 @@ from employees.models import Team
 
 class Task(models.Model):
     PRIORITY_CHOICES = (
-        ("urgent", "Urgent"),
-        ("high", "High"),
-        ("medium", "Medium"),
-        ("low", "Low"),
+        ("1", "Urgent"),
+        ("2", "High"),
+        ("3", "Medium"),
+        ("4", "Low"),
     )
 
     name = models.CharField(max_length=255)
@@ -29,6 +29,9 @@ class Task(models.Model):
     assignees = models.ManyToManyField(get_user_model(), related_name="tasks", blank=True)
     tags = models.ManyToManyField("TaskTag", blank=True)
     slug = AutoSlugField(populate_from=["name"], unique=True)
+
+    class Meta:
+        ordering = ("priority", "-deadline", "name")
 
 
     def __str__(self):
@@ -52,7 +55,7 @@ class TaskTag(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    teams = models.ManyToManyField(Team)
+    teams = models.ManyToManyField(Team, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     slug = AutoSlugField(populate_from=["name"], unique=True)
 
