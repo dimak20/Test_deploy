@@ -40,7 +40,7 @@ class EmployeeInvitationView(LoginRequiredMixin, View):
 
             send_mail(
                 "You have been invited!",
-                f"{request.user} has invited you to join. Proceed to {reverse('employees:employee-register', args={invitation.slug})}",
+                f"{request.user} has invited you to join. Proceed to {request.build_absolute_uri(reverse('employees:employee-register', args={invitation.slug}))}",
                 "from@example.com",
                 [invitation.email],
                 fail_silently=False,
