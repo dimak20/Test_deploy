@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LoginView,
     PasswordResetView,
-    PasswordResetCompleteView, LogoutView,
+    PasswordResetCompleteView,
+    LogoutView,
 )
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
@@ -22,7 +23,7 @@ from employees.forms import (
     TeamForm,
 )
 from employees.mixins import InvitationSearchMixin, EmployeeSearchMixin, TeamSearchMixin
-from employees.models import Invitation, Team
+from employees.models import Invitation, Team, Employee
 
 
 class EmployeeInvitationView(LoginRequiredMixin, View):
@@ -51,10 +52,11 @@ class EmployeeInvitationView(LoginRequiredMixin, View):
             return render(request, "employees/employee_invite.html", {"form": form})
 
 
-class InvitationListView(InvitationSearchMixin, ListView):
+class InvitationListView(LoginRequiredMixin, InvitationSearchMixin, ListView):
     model = Invitation
     template_name = "employees/invitations/invitation_list.html"
     paginate_by = 5
+    queryset = Invitation.objects.select_related("position", "invited_by")
 
 
 class EmployeeRegisterView(View):
@@ -133,6 +135,9 @@ class EmployeeListView(LoginRequiredMixin, EmployeeSearchMixin, ListView):
     model = get_user_model()
     template_name = "employees/employee_list.html"
     paginate_by = 5
+    queryset = (
+        get_user_model().objects.select_related("position").prefetch_related("teams")
+    )
 
 
 class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
@@ -156,24 +161,26 @@ class EmployeeDeleteView(LoginRequiredMixin, DeleteView):
 
 class TeamListView(LoginRequiredMixin, TeamSearchMixin, ListView):
     model = Team
+    queryset = Team.objects.prefetch_related("members")
+    template_name = "employees/teams/team_list.html"
     paginate_by = 5
 
 
 class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
-    template_name = "employees/team_form.html"
-    success_url = "/"
+    template_name = "employees/teams/team_form.html"
+    success_url = reverse_lazy("tasks:team-list")
 
 
 class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = Team
     form_class = TeamForm
-    template_name = "employees/team_form.html"
+    template_name = "employees/teams/team_form.html"
     success_url = reverse_lazy("tasks:team-list")
-
 
 
 class TeamDeleteView(LoginRequiredMixin, DeleteView):
     model = Team
+    template_name = "employees/teams/team_confirm_delete.html"
     success_url = reverse_lazy("tasks:team-list")
