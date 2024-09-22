@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load tasks_filters %}
 
 {% block title %}Project list{% endblock title %}
 {% block body %} class="sign-in-illustration" {% endblock body %}
@@ -45,11 +44,11 @@
         <td>
           <p class="fw-normal mb-1 d-flex align-items-center">
             <span title="Active tasks">
-            {% include "includes/svg/dot.html" with color="green" %}{{ project|get_active_tasks_num }}
+            {% include "includes/svg/dot.html" with color="green" %}{{ project.active_tasks_num }}
             </span>
             &nbsp;
             <span title="Completed tasks">
-            {% include "includes/svg/dot.html" with color="grey" %}{{ project|get_completed_tasks_num }}
+            {% include "includes/svg/dot.html" with color="grey" %}{{ project.completed_tasks_num }}
             </span>
           </p>
         </td>

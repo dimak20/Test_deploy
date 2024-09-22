@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.db.models import Case, When, Value, IntegerField, Q
+from django.db.models import Case, When, Value, IntegerField, Q, Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
@@ -43,6 +43,7 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
         context["user_tasks"] = (
             Task.objects.filter(assignees=self.request.user)
             .distinct()
+            .select_related("project")
             .order_by("deadline")
         )
 
@@ -52,14 +53,18 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
 # Project Views
 class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     model = Project
+    queryset = Project.objects.prefetch_related("tasks", "teams")
     paginate_by = 5
     template_name = "tasks/projects/project_list.html"
 
     def get_queryset(self):
-        return Project.objects.prefetch_related("tasks", "teams")
+        return Project.objects.prefetch_related("tasks", "teams").annotate(
+            active_tasks_num=Count("tasks", filter=Q(tasks__is_completed=False)),
+            completed_tasks_num=Count("tasks", filter=Q(tasks__is_completed=True)),
+        )
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = "tasks/projects/project_form.html"
     form_class = ProjectForm
@@ -75,18 +80,18 @@ class ProjectCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     template_name = "tasks/projects/project_detail.html"
-
-    def get_queryset(self):
-        queryset = Project.objects.prefetch_related("tasks")
-        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         project = self.get_object()
-        tasks = project.tasks.all()
+        tasks = (
+            project.tasks.select_related("task_type")
+            .prefetch_related("assignees", "tags")
+            .all()
+        )
 
         form = TaskSearchForm(self.request.GET)
         if self.request.GET.get("query"):
@@ -111,14 +116,14 @@ class ProjectDetailView(DetailView):
         return context
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = "tasks/projects/project_form.html"
     form_class = ProjectForm
     success_url = reverse_lazy("tasks:project-list")
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = "tasks/projects/project_confirm_delete.html"
 
@@ -146,9 +151,10 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy("tasks:project-detail", kwargs={"slug": project_slug})
 
 
-class TaskDetailView(DetailView):
+class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
+    queryset = Task.objects
 
 
 @login_required
@@ -169,7 +175,7 @@ def toggle_task_completion(request, slug):
     return redirect(reverse("tasks:task-detail", kwargs={"slug": slug}))
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = "tasks/task_form.html"
@@ -178,7 +184,7 @@ class TaskUpdateView(UpdateView):
         return reverse("tasks:task-detail", kwargs={"slug": self.object.slug})
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = "tasks/task_confirm_delete.html"
 
