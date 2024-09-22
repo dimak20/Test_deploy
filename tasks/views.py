@@ -55,6 +55,9 @@ class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     paginate_by = 5
     template_name = "tasks/projects/project_list.html"
 
+    def get_queryset(self):
+        return Project.objects.prefetch_related("tasks", "teams")
+
 
 class ProjectCreateView(CreateView):
     model = Project
