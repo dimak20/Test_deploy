@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LoginView,
     PasswordResetView,
-    PasswordResetCompleteView,
+    PasswordResetCompleteView, LogoutView,
 )
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse
@@ -87,7 +87,11 @@ class EmployeeRegisterView(View):
 class EmployeeLoginView(LoginView):
     form_class = EmployeeAuthenticationForm
     template_name = "employees/employee_login.html"
-    success_url = "/"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         remember_me = form.cleaned_data["remember_me"]
@@ -98,6 +102,16 @@ class EmployeeLoginView(LoginView):
             self.request.session.set_expiry(0)
 
         return super(EmployeeLoginView, self).form_valid(form)
+
+    def get_success_url(self):
+        if self.request.GET.get("next"):
+            return self.request.GET.get("next")
+        return reverse_lazy("tasks:dashboard")
+
+
+class EmployeeLogoutView(LogoutView):
+    template_name = "employees/employee_logout.html"
+    success_url = reverse_lazy("tasks:dashboard")
 
 
 class EmployeePasswordResetView(PasswordResetView):

@@ -23,7 +23,7 @@
               <div class="card-header">
                 <h5 class="card-title mb-0">My Projects</h5>
               </div>
-              <div class="card-body pt-0" style="overflow-y: auto; max-height: 220px;">
+              <div class="card-body pt-0" style="overflow-y: auto; max-height: 200px;">
                 {% for project in user_projects %}
                   <p class="my-auto"><a href="{% url "tasks:project-detail" project.slug %}">{{ project.name }}</a></p>
                 {% empty %}
@@ -58,7 +58,7 @@
           <div class="card-header">
             <h5 class="card-title mb-0">My Tasks</h5>
           </div>
-          <div class="card-body pt-0" style="overflow-y: auto; max-height: 390px;">
+          <div class="card-body pt-0" style="overflow-y: auto; max-height: 370px;">
             <table class="table align-middle mb-0 bg-white">
               <thead class="bg-light">
               <tr>

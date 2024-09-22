@@ -15,7 +15,7 @@ from employees.views import (
     TeamDeleteView,
     EmployeePasswordResetView,
     EmployeePasswordResetCompleteView,
-    InvitationListView,
+    InvitationListView, EmployeeLogoutView,
 )
 
 app_name = "employees"
@@ -33,6 +33,7 @@ urlpatterns = [
         name="employee-register",
     ),
     path("employees/login/", EmployeeLoginView.as_view(), name="employee-login"),
+    path("employees/logout/", EmployeeLogoutView.as_view(), name="employee-logout"),
     path(
         "employees/password_reset/",
         EmployeePasswordResetView.as_view(),
