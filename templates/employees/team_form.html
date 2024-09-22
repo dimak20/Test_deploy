@@ -1,33 +1,57 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ object|yesno:"Update,Create"}} project{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+  {% include "includes/navigation.html" with absolute=True %}
+  {% include "includes/scripts.html" %}
+{% endblock header %}
+
 {% block content %}
- {% load static %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <div class="form-group">
-        <label for="id_name">Team Name:</label>
-        {{ form.name }}
-        {{ form.name.errors }}
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+            <h4 class="font-weight-bolder mb-0">{{ object|yesno:"Edit,Add new"}} team</h4>
+            <div class="card card-plain">
+              <div class="card-body">
+                <form method="post" action="{% url "tasks:project-create" %}" role="form">
+                  {% csrf_token %}
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  <div class="mb-3">
+                        {% include "includes/errors/field_errors.html" with field=form.name %}
+                        {{ form.name }}
+                      </div>
+
+                  <div class="mb-3">
+                        <p class="text-sm text-dark mb-1">Members</p>
+                        {% include "includes/errors/field_errors.html" with field=form.teams %}
+                        <script>initSelect2("#id_members")</script>
+                        {{ form.members }}
+                      </div>
+
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                    {{ object|yesno:"Update,Create"}} Team
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="id_members">Select Members:</label>
-        {{ form.members }}
-        {{ form.members.errors }}
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  </section>
 
-<script>
-    $(document).ready(function() {
-        $('#id_members').select2({
-            placeholder: 'Select employees',
-            allowClear: true,
-        });
-    });
-</script>
+{% endblock content %}
 
-{% endblock %}
+{% block footer %}
+{% endblock footer %}

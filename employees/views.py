@@ -21,8 +21,8 @@ from employees.forms import (
     EmployeeAuthenticationForm,
     TeamForm,
 )
-from employees.mixins import InvitationSearchMixin, EmployeeSearchMixin
-from employees.models import Invitation, Employee, Team
+from employees.mixins import InvitationSearchMixin, EmployeeSearchMixin, TeamSearchMixin
+from employees.models import Invitation, Team
 
 
 class EmployeeInvitationView(LoginRequiredMixin, View):
@@ -129,20 +129,20 @@ class EmployeePasswordResetCompleteView(PasswordResetCompleteView):
         return context
 
 
-class EmployeeListView(EmployeeSearchMixin, ListView):
+class EmployeeListView(LoginRequiredMixin, EmployeeSearchMixin, ListView):
     model = get_user_model()
     template_name = "employees/employee_list.html"
     paginate_by = 5
 
 
-class EmployeeUpdateView(UpdateView):
+class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
     model = get_user_model()
     form_class = EmployeeUpdateForm
     template_name = "employees/employee_update.html"
     success_url = reverse_lazy("employees:employee-list")
 
 
-class EmployeeDeleteView(DeleteView):
+class EmployeeDeleteView(LoginRequiredMixin, DeleteView):
     model = get_user_model()
     success_url = reverse_lazy("employees:employee-list")
 
@@ -154,32 +154,26 @@ class EmployeeDeleteView(DeleteView):
         return super(EmployeeDeleteView, self).delete(request, *args, **kwargs)
 
 
-class TeamListView(ListView):
+class TeamListView(LoginRequiredMixin, TeamSearchMixin, ListView):
     model = Team
+    paginate_by = 5
 
 
-class TeamCreateView(CreateView):
-    model = Team
-    form_class = TeamForm
-    template_name = "employees/team_form.html"
-    success_url = "/"
-
-
-class TeamUpdateView(UpdateView):
+class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = "employees/team_form.html"
     success_url = "/"
 
-    def get_context_data(self, **kwargs):
-        context = super(TeamUpdateView, self).get_context_data(**kwargs)
-        team = Team.objects.get(slug=self.kwargs["slug"])
-        context["form"] = TeamForm(
-            initial={"name": team.name, "members": team.members.all()}
-        )
-        return context
 
-
-class TeamDeleteView(DeleteView):
+class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = Team
-    success_url = "/"
+    form_class = TeamForm
+    template_name = "employees/team_form.html"
+    success_url = reverse_lazy("tasks:team-list")
+
+
+
+class TeamDeleteView(LoginRequiredMixin, DeleteView):
+    model = Team
+    success_url = reverse_lazy("tasks:team-list")

@@ -57,8 +57,20 @@ class TeamForm(forms.ModelForm):
         model = Team
         fields = ["name", "members"]
         widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Name"}),
             "members": Select2MultipleWidget(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field.widget.attrs.get("class"):
+                field.widget.attrs["class"] += " form-control form-control-lg"
+            else:
+                field.widget.attrs.update({"class": "form-control form-control-lg"})
+
+            if self.errors.get(field_name):
+                field.widget.attrs["class"] += " is-invalid"
 
 
 class InvitationSearchForm(forms.Form):
@@ -70,6 +82,14 @@ class InvitationSearchForm(forms.Form):
 
 
 class EmployeeSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+    )
+
+
+class TeamSearchForm(forms.Form):
     query = forms.CharField(
         max_length=255,
         required=False,

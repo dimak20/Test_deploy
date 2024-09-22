@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Employees{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+
+  {% include 'includes/navigation.html' %}
+
+{% endblock header %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="font-weight-bolder mb-0">Teams</h4>
+    <form class="d-flex flex-grow-1 mx-6" action="" method="get">
+      <input type="text" name="query" placeholder="Search" class="form-control"
+             value="{{ request.GET.query|default:'' }}">
+    </form>
+    <a href="{% url "employees:team-create" %}">
+      <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0">Create new team</button>
+    </a>
+  </div>
+  <table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+    <tr>
+      <th>Team</th>
+      <th>Members</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in team_list %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            {{ team.name }}
+          </div>
+        </td>
+        <td>
+          <p class="fw-normal mb-1">{{ team.members.all|join:", "|default:"None" }}</p>
+        </td>
+        <td>
+          <a class="fw-normal mb-1" href="{% url "employees:team-update" team.slug %}">Update</a>
+        </td>
+        <td>
+          <a class="fw-normal mb-1" href="{% url "employees:team-delete" team.slug %}">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <p>No employees registered yet.</p>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block footer %}
+  {% include "includes/messages.html" %}
+  {% include 'includes/scripts.html' %}
+{% endblock footer %}

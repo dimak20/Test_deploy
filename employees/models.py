@@ -14,7 +14,7 @@ class Position(models.Model):
 
 
 class Employee(AbstractUser):
-    position = models.ForeignKey("Position", on_delete=models.CASCADE)
+    position = models.ForeignKey("Position", on_delete=models.RESTRICT)
     slug = AutoSlugField(
         populate_from=["username", "first_name", "last_name"],
         unique=True
@@ -43,6 +43,9 @@ class Team(models.Model):
     name = models.CharField(max_length=100)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="teams")
     slug = AutoSlugField(populate_from=["name"], unique=True)
+
+    class Meta:
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
