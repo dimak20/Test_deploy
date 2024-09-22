@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -40,7 +41,7 @@ class Invitation(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
-    members = models.ManyToManyField(get_user_model(), related_name="teams")
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="teams")
     slug = AutoSlugField(populate_from=["name"], unique=True)
 
     def __str__(self):

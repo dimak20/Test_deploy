@@ -7,12 +7,15 @@ from tasks.views import (
     ProjectDetailView,
     ProjectListView,
     TaskCreateView,
-    TaskDetailView, toggle_task_completion, TaskUpdateView, TaskDeleteView,
+    TaskDetailView, toggle_task_completion, TaskUpdateView, TaskDeleteView, UserDashboardView,
 )
 
 app_name = "tasks"
 
 urlpatterns = [
+    # Dashboard
+    path("", UserDashboardView.as_view(), name="dashboard"),
+
     # Projects
     path("projects/", ProjectListView.as_view(), name="project-list"),
     path("projects/create/", ProjectCreateView.as_view(), name="project-create"),

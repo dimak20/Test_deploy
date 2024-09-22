@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Case, When, Value, IntegerField, Q
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic import (
@@ -12,15 +12,41 @@ from django.views.generic import (
     DetailView,
     UpdateView,
     DeleteView,
+    TemplateView,
 )
 
+from employees.models import Team
 from tasks.forms import TaskSearchForm, ProjectForm, TaskForm
 from tasks.mixins import ProjectSearchMixin
 from tasks.models import Project, Task
 
 
-class UserDashboardView(LoginRequiredMixin, View):
-    pass
+class UserDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "tasks/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        projects_by_tasks = Project.objects.filter(
+            tasks__assignees=self.request.user
+        ).distinct()
+        projects_by_teams = Project.objects.filter(
+            teams__members=self.request.user
+        ).distinct()
+        context["user_projects"] = projects_by_tasks | projects_by_teams.exclude(
+            id__in=projects_by_tasks.values("id")
+        )
+
+        teams = Team.objects.filter(members=self.request.user).distinct()
+        context["user_teams"] = teams
+
+        context["user_tasks"] = (
+            Task.objects.filter(assignees=self.request.user)
+            .distinct()
+            .order_by("deadline")
+        )
+
+        return context
 
 
 # Project Views
@@ -105,7 +131,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         project_slug = self.kwargs.get("project_slug")
         task.project = Project.objects.get(slug=project_slug)
         task.save()
-        task_url = reverse("tasks:task-detail", kwargs={"slug": task.slug })
+        task_url = reverse("tasks:task-detail", kwargs={"slug": task.slug})
         message = mark_safe(
             f"<a style='text-decoration: underline;' href={task_url}>Task</a> created"
         )
