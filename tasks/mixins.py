@@ -13,17 +13,19 @@ class ProjectSearchMixin(ListView):
         if form.is_valid():
             query = form.cleaned_data["query"]
             if query:
-                queryset = queryset.annotate(
-                    name_match=Case(
-                        When(name__icontains=query, then=1),
-                        default=0,
-                    ),
-                    task_match=Case(
-                        When(tasks__name__icontains=query, then=1),
-                        default=0,
+                queryset = (
+                    queryset.annotate(
+                        name_match=Case(
+                            When(name__icontains=query, then=1),
+                            default=0,
+                        ),
+                        task_match=Case(
+                            When(tasks__name__icontains=query, then=1),
+                            default=0,
+                        ),
                     )
-                ).filter(
-                    Q(name__icontains=query) | Q(tasks__name__icontains=query)
-                ).order_by('-name_match', '-task_match')
+                    .filter(Q(name__icontains=query) | Q(tasks__name__icontains=query))
+                    .order_by("-name_match", "-task_match")
+                )
 
         return queryset

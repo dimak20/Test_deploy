@@ -15,7 +15,8 @@ from employees.views import (
     TeamDeleteView,
     EmployeePasswordResetView,
     EmployeePasswordResetCompleteView,
-    InvitationListView, EmployeeLogoutView,
+    InvitationListView,
+    EmployeeLogoutView,
 )
 
 app_name = "employees"

@@ -16,8 +16,7 @@ class Position(models.Model):
 class Employee(AbstractUser):
     position = models.ForeignKey("Position", on_delete=models.RESTRICT)
     slug = AutoSlugField(
-        populate_from=["username", "first_name", "last_name"],
-        unique=True
+        populate_from=["username", "first_name", "last_name"], unique=True
     )
 
     def __str__(self):

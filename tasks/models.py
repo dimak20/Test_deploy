@@ -24,7 +24,9 @@ class Task(models.Model):
     completed_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL
     )
-    priority = models.CharField(max_length=100, choices=PRIORITY_CHOICES, blank=False, null=False)
+    priority = models.CharField(
+        max_length=100, choices=PRIORITY_CHOICES, blank=False, null=False
+    )
     task_type = models.ForeignKey("TaskType", on_delete=models.RESTRICT)
     assignees = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="tasks", blank=True

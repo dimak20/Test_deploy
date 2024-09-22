@@ -2,7 +2,6 @@ from django.views.generic import ListView
 from django.db.models import Case, When, Q
 
 from employees.forms import InvitationSearchForm, EmployeeSearchForm, TeamSearchForm
-from employees.models import Invitation
 
 
 class InvitationSearchMixin(ListView):
@@ -64,7 +63,12 @@ class EmployeeSearchMixin(ListView):
                         | Q(first_name__icontains=query)
                         | Q(last_name__icontains=query)
                     )
-                    .order_by("-last_name_match", "-first_name_match", "-email_match", "-position_match")
+                    .order_by(
+                        "-last_name_match",
+                        "-first_name_match",
+                        "-email_match",
+                        "-position_match",
+                    )
                 )
 
         return queryset
@@ -90,9 +94,7 @@ class TeamSearchMixin(ListView):
                             default=0,
                         ),
                     )
-                    .filter(
-                        Q(name__icontains=query) | Q(member_match__gte=1)
-                    )
+                    .filter(Q(name__icontains=query) | Q(member_match__gte=1))
                     .order_by("-name_match", "-member_match")
                 )
 

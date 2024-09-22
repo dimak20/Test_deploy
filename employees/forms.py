@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    AuthenticationForm,
+)
 from django_select2.forms import Select2MultipleWidget
 
 from employees.models import Invitation, Team
@@ -48,7 +51,9 @@ class EmployeeUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["position"].widget.attrs.update({"class": "form-control form-control-lg"})
+        self.fields["position"].widget.attrs.update(
+            {"class": "form-control form-control-lg"}
+        )
         self.fields["position"].empty_label = None
 
 

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -85,7 +86,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "task_manager_project.wsgi.application"
 
-SESSION_COOKIE_AGE = 604800
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 AUTHENTICATION_BACKENDS = [
     "employees.backends.EmailBackend",
@@ -163,6 +164,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
-    "localhost"
+    "localhost",
     # ...
 ]
