@@ -43,7 +43,13 @@ class EmployeeAuthenticationForm(AuthenticationForm):
 class EmployeeUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ["position"]
+        fields = ("position",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["position"].widget.attrs.update({"class": "form-control form-control-lg"})
+        self.fields["position"].empty_label = None
 
 
 class TeamForm(forms.ModelForm):
@@ -56,6 +62,14 @@ class TeamForm(forms.ModelForm):
 
 
 class InvitationSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+    )
+
+
+class EmployeeSearchForm(forms.Form):
     query = forms.CharField(
         max_length=255,
         required=False,

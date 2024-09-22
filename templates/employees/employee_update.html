@@ -1,8 +1,53 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit employee{% endblock title %}
+{% block body %} class="sign-in-illustration" {% endblock body %}
+
+{% block header %}
+  {% include "includes/navigation.html" with absolute=True %}
+  {% include "includes/scripts.html" %}
+{% endblock header %}
+
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-<input type="submit" value="Register">
-</form>
+
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-md-7 d-flex flex-column mx-lg-15 mx-auto">
+            <h4 class="font-weight-bolder mb-0">Change position for {{ employee }}</h4>
+            <div class="card card-plain">
+              <div class="card-body">
+                <form method="post" role="form">
+                  {% csrf_token %}
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <span class="text-danger"> {{ error }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  <div class="mb-3">
+                    {% include "includes/errors/field_errors.html" with field=form.position %}
+                    {{ form.position }}
+                  </div>
+
+                  <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                    Update position
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 {% endblock content %}
+
+{% block footer %}
+
+  {% include 'includes/footer_signin.html' %}
+
+{% endblock footer %}

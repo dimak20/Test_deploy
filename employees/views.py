@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     LoginView,
@@ -8,8 +8,6 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView,
 )
 from django.core.mail import send_mail
-from django.db.models import Case, When, Q
-from django.forms import IntegerField
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -22,9 +20,8 @@ from employees.forms import (
     EmployeeUpdateForm,
     EmployeeAuthenticationForm,
     TeamForm,
-    InvitationSearchForm,
 )
-from employees.mixins import InvitationSearchMixin
+from employees.mixins import InvitationSearchMixin, EmployeeSearchMixin
 from employees.models import Invitation, Employee, Team
 
 
@@ -118,15 +115,22 @@ class EmployeePasswordResetCompleteView(PasswordResetCompleteView):
         return context
 
 
+class EmployeeListView(EmployeeSearchMixin, ListView):
+    model = get_user_model()
+    template_name = "employees/employee_list.html"
+    paginate_by = 5
+
+
 class EmployeeUpdateView(UpdateView):
-    model = Employee
+    model = get_user_model()
     form_class = EmployeeUpdateForm
     template_name = "employees/employee_update.html"
+    success_url = reverse_lazy("employees:employee-list")
 
 
 class EmployeeDeleteView(DeleteView):
-    model = Employee
-    success_url = "/"
+    model = get_user_model()
+    success_url = reverse_lazy("employees:employee-list")
 
     def delete(self, request, *args, **kwargs):
         employee = self.get_object()

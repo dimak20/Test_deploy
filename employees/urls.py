@@ -5,6 +5,7 @@ from django.contrib.auth import views as auth_views
 from employees.views import (
     EmployeeInvitationView,
     EmployeeRegisterView,
+    EmployeeListView,
     EmployeeLoginView,
     EmployeeUpdateView,
     EmployeeDeleteView,
@@ -57,7 +58,8 @@ urlpatterns = [
         EmployeePasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    # Read-Update-Delete
+    # Employees
+    path("employees/", EmployeeListView.as_view(), name="employee-list"),
     path(
         "employees/<slug:slug>/update/",
         EmployeeUpdateView.as_view(),
