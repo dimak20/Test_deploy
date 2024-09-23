@@ -82,7 +82,7 @@ class EmployeeRegisterView(View):
             login(request, user)
             invitation.is_accepted = True
             invitation.save()
-            return redirect("/")
+            return redirect(reverse("tasks:dashboard"))
         return render(request, "employees/employee_register.html", {"form": form})
 
 

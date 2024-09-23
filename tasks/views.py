@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic import (
-    View,
     ListView,
     CreateView,
     DetailView,
@@ -53,12 +52,11 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
 # Project Views
 class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     model = Project
-    queryset = Project.objects.prefetch_related("tasks", "teams")
     paginate_by = 5
     template_name = "tasks/projects/project_list.html"
 
     def get_queryset(self):
-        return Project.objects.prefetch_related("tasks", "teams").annotate(
+        return super().get_queryset().prefetch_related("tasks", "teams").annotate(
             active_tasks_num=Count("tasks", filter=Q(tasks__is_completed=False)),
             completed_tasks_num=Count("tasks", filter=Q(tasks__is_completed=True)),
         )

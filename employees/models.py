@@ -22,9 +22,6 @@ class Employee(AbstractUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_absolute_url(self):
-        return reverse("employees:detail", kwargs={"slug": self.slug})
-
 
 class Invitation(models.Model):
     email = models.EmailField(unique=True)
