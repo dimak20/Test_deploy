@@ -87,7 +87,10 @@ class PrivateTaskCreateTests(BasePrivateProjectTests):
         }
         response = self.client.post(self.TASK_CREATE_URL, data=form_data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("tasks:project-detail", kwargs={"slug": self.project.slug}))
+        self.assertRedirects(
+            response,
+            reverse("tasks:project-detail", kwargs={"slug": self.project.slug}),
+        )
         self.assertTrue(Task.objects.filter(name="Test Task").exists())
 
 
@@ -98,9 +101,11 @@ class PrivateDetailViewTests(BasePrivateProjectTests):
             name="Test Task",
             project=self.project,
             task_type=self.task_type,
-            deadline=timezone.now()
+            deadline=timezone.now(),
         )
-        self.TASK_DETAIL_URL = reverse("tasks:task-detail", kwargs={"slug": self.task.slug})
+        self.TASK_DETAIL_URL = reverse(
+            "tasks:task-detail", kwargs={"slug": self.task.slug}
+        )
 
     def test_task_detail_uses_correct_template(self):
         response = self.client.get(self.TASK_DETAIL_URL)
@@ -109,28 +114,28 @@ class PrivateDetailViewTests(BasePrivateProjectTests):
         self.assertContains(response, self.task.name)
 
     def test_task_detail_post_complete_task(self):
-        form_data = {
-            "action": "complete"
-        }
+        form_data = {"action": "complete"}
         response = self.client.post(self.TASK_DETAIL_URL, data=form_data)
         self.task.refresh_from_db()
         self.assertTrue(self.task.is_completed)
         self.assertEqual(self.task.completed_by, self.employee)
-        self.assertRedirects(response, reverse('tasks:task-detail', kwargs={'slug': self.task.slug}))
+        self.assertRedirects(
+            response, reverse("tasks:task-detail", kwargs={"slug": self.task.slug})
+        )
 
     def test_task_detail_post_reopen_task(self):
         self.task.is_completed = True
         self.task.completed_by = self.employee
         self.task.save()
 
-        form_data = {
-            "action": "open"
-        }
+        form_data = {"action": "open"}
         response = self.client.post(self.TASK_DETAIL_URL, data=form_data)
         self.task.refresh_from_db()
         self.assertFalse(self.task.is_completed)
         self.assertEqual(self.task.completed_by, None)
-        self.assertRedirects(response, reverse('tasks:task-detail', kwargs={'slug': self.task.slug}))
+        self.assertRedirects(
+            response, reverse("tasks:task-detail", kwargs={"slug": self.task.slug})
+        )
 
 
 class PrivateTaskUpdateTests(BasePrivateProjectTests):
@@ -140,9 +145,11 @@ class PrivateTaskUpdateTests(BasePrivateProjectTests):
             name="Test Task",
             project=self.project,
             task_type=self.task_type,
-            deadline=timezone.now()
+            deadline=timezone.now(),
         )
-        self.TASK_UPDATE_URL = reverse("tasks:task-update", kwargs={"slug": self.task.slug})
+        self.TASK_UPDATE_URL = reverse(
+            "tasks:task-update", kwargs={"slug": self.task.slug}
+        )
 
     def test_task_update_uses_correct_template(self):
         response = self.client.get(self.TASK_UPDATE_URL)
@@ -159,7 +166,9 @@ class PrivateTaskUpdateTests(BasePrivateProjectTests):
         }
         response = self.client.post(self.TASK_UPDATE_URL, data=form_data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('tasks:task-detail', kwargs={'slug': self.task.slug}))
+        self.assertRedirects(
+            response, reverse("tasks:task-detail", kwargs={"slug": self.task.slug})
+        )
         updated_task = Task.objects.get(slug=self.task.slug)
         self.assertEqual(updated_task.name, form_data["name"])
 
@@ -171,19 +180,23 @@ class PrivateTaskDeleteTests(BasePrivateProjectTests):
             name="Test Task",
             project=self.project,
             task_type=self.task_type,
-            deadline=timezone.now()
+            deadline=timezone.now(),
         )
-        self.TASK_DELETE_URL = reverse("tasks:task-delete", kwargs={"slug": self.task.slug})
+        self.TASK_DELETE_URL = reverse(
+            "tasks:task-delete", kwargs={"slug": self.task.slug}
+        )
 
     def test_task_delete_uses_correct_template(self):
         response = self.client.get(self.TASK_DELETE_URL)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "tasks/task_confirm_delete.html")
 
-
     def test_task_delete_post_valid(self):
         response = self.client.post(self.TASK_DELETE_URL)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("tasks:project-detail", kwargs={"slug": self.project.slug}))
+        self.assertRedirects(
+            response,
+            reverse("tasks:project-detail", kwargs={"slug": self.project.slug}),
+        )
         deleted_task = Task.objects.filter(slug=self.task.slug)
         self.assertEqual(len(deleted_task), 0)

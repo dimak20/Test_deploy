@@ -55,9 +55,14 @@ class ProjectListView(LoginRequiredMixin, ProjectSearchMixin, ListView):
     template_name = "tasks/projects/project_list.html"
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("tasks", "teams").annotate(
-            active_tasks_num=Count("tasks", filter=Q(tasks__is_completed=False)),
-            completed_tasks_num=Count("tasks", filter=Q(tasks__is_completed=True)),
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related("tasks", "teams")
+            .annotate(
+                active_tasks_num=Count("tasks", filter=Q(tasks__is_completed=False)),
+                completed_tasks_num=Count("tasks", filter=Q(tasks__is_completed=True)),
+            )
         )
 
 
@@ -126,7 +131,6 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("tasks:project-list")
 
 
-
 # Task Views
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
@@ -167,7 +171,9 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             task.completed_by = None
             task.save()
 
-        return HttpResponseRedirect(reverse_lazy("tasks:task-detail", kwargs={"slug": task.slug}))
+        return HttpResponseRedirect(
+            reverse_lazy("tasks:task-detail", kwargs={"slug": task.slug})
+        )
 
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):

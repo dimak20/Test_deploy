@@ -26,18 +26,16 @@ class TestEmployeeModel(TestCase):
 
     def test_employee_str(self):
         self.assertEqual(
-            str(self.employee),
-            f"{self.employee.first_name} {self.employee.last_name}"
+            str(self.employee), f"{self.employee.first_name} {self.employee.last_name}"
         )
 
     def test_employee_slug(self):
-        test_slug = (f"{self.employee.username}"
-                f"-{self.employee.first_name}"
-                f"-{self.employee.last_name}").lower()
-        self.assertEqual(
-            self.employee.slug,
-            test_slug
-        )
+        test_slug = (
+            f"{self.employee.username}"
+            f"-{self.employee.first_name}"
+            f"-{self.employee.last_name}"
+        ).lower()
+        self.assertEqual(self.employee.slug, test_slug)
 
 
 class TestTeamMode(TestCase):

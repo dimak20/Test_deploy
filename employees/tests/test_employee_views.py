@@ -193,7 +193,9 @@ class EmployeeLoginTests(BaseEmployeeTests):
 
     def test_employee_login_view_post_valid(self):
         user = get_user_model().objects.create_user(
-            username="testlogin", email="testuser@example.com", password="password123",
+            username="testlogin",
+            email="testuser@example.com",
+            password="password123",
             position=self.position,
         )
         post_data = {
@@ -228,9 +230,13 @@ class EmployeePasswordResetTests(BaseEmployeeTests):
     def test_employee_password_reset_view(self):
         response = self.client.get(reverse("employees:password_reset"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "employees/reset_password/password_reset.html")
+        self.assertTemplateUsed(
+            response, "employees/reset_password/password_reset.html"
+        )
 
     def test_employee_password_reset_complete_view(self):
         response = self.client.get(reverse("employees:password_reset_complete"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "employees/reset_password/password_reset_complete.html")
+        self.assertTemplateUsed(
+            response, "employees/reset_password/password_reset_complete.html"
+        )

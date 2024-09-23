@@ -18,7 +18,9 @@ class PublicInvitationTests(TestCase):
             "email": "test@email.com",
             "position_id": self.position.id,
         }
-        response = self.client.post(reverse("employees:employee-invite"), data=form_data)
+        response = self.client.post(
+            reverse("employees:employee-invite"), data=form_data
+        )
         self.assertNotEqual(response.status_code, 200)
         self.assertFalse(Invitation.objects.filter(email=form_data["email"]).exists())
 
@@ -50,7 +52,9 @@ class PrivateEmployeeInvitationTests(BasePrivateInvitationTests):
             "email": "test@email.com",
             "position": self.position.id,
         }
-        response = self.client.post(reverse("employees:employee-invite"), data=form_data)
+        response = self.client.post(
+            reverse("employees:employee-invite"), data=form_data
+        )
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("employees:invitation-list"))
@@ -81,8 +85,7 @@ class PrivateInvitationListTests(BasePrivateInvitationTests):
         self.assertTrue("is_paginated" in response.context)
         self.assertEqual(response.context["is_paginated"], True)
         self.assertEqual(
-            len(response.context["invitation_list"]),
-            self.VIEW_PAGINATED_BY
+            len(response.context["invitation_list"]), self.VIEW_PAGINATED_BY
         )
 
     def test_invitation_list_search(self):

@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from employees.forms import EmployeeInvitationForm, EmployeeCreationForm, EmployeeAuthenticationForm
+from employees.forms import (
+    EmployeeInvitationForm,
+    EmployeeCreationForm,
+    EmployeeAuthenticationForm,
+)
 from employees.models import Position, Invitation
 
 

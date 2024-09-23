@@ -8,7 +8,6 @@ from tasks.views import (
     ProjectListView,
     TaskCreateView,
     TaskDetailView,
-    # toggle_task_completion,
     TaskUpdateView,
     TaskDeleteView,
     UserDashboardView,
