@@ -40,7 +40,9 @@ class Invitation(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="teams")
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="teams", blank=True
+    )
     slug = AutoSlugField(populate_from=["name"], unique=True)
 
     class Meta:

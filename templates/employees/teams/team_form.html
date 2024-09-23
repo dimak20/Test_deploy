@@ -19,7 +19,7 @@
             <h4 class="font-weight-bolder mb-0">{{ object|yesno:"Edit,Add new"}} team</h4>
             <div class="card card-plain">
               <div class="card-body">
-                <form method="post" action="{% url "tasks:project-create" %}" role="form">
+                <form method="post" role="form">
                   {% csrf_token %}
                   {% if form.non_field_errors %}
                     {% for error in form.non_field_errors %}

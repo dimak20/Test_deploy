@@ -170,17 +170,17 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = "employees/teams/team_form.html"
-    success_url = reverse_lazy("tasks:team-list")
+    success_url = reverse_lazy("employees:team-list")
 
 
 class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = Team
     form_class = TeamForm
     template_name = "employees/teams/team_form.html"
-    success_url = reverse_lazy("tasks:team-list")
+    success_url = reverse_lazy("employees:team-list")
 
 
 class TeamDeleteView(LoginRequiredMixin, DeleteView):
     model = Team
     template_name = "employees/teams/team_confirm_delete.html"
-    success_url = reverse_lazy("tasks:team-list")
+    success_url = reverse_lazy("employees:team-list")
