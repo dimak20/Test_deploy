@@ -82,3 +82,69 @@ class PrivateTeamListTests(BasePrivateTeamTests):
         self.assertEqual(len(response.context["team_list"]), 5)
         self.assertContains(response, "Team 1")
         self.assertNotContains(response, "Team 5")
+
+
+class PrivateTeamCreateTests(BasePrivateTeamTests):
+    TEAM_CREATE_URL = reverse("employees:team-create")
+
+    def test_create_team_uses_correct_template(self):
+        response = self.client.get(self.TEAM_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "employees/teams/team_form.html")
+
+    def test_create_team_post_valid(self):
+        form_data = {
+            "name": "Test Team",
+            "members": [self.employee.id],
+        }
+        response = self.client.post(self.TEAM_CREATE_URL, data=form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("employees:team-list"))
+        self.assertTrue(Team.objects.filter(name="Test Team").exists())
+
+
+class PrivateTeamUpdateTests(BasePrivateTeamTests):
+    def setUp(self):
+        super().setUp()
+        self.team = Team.objects.create(
+            name="Test Team",
+        )
+        self.TEAM_UPDATE_URL = reverse(
+            "employees:team-update", kwargs={"slug": self.team.slug}
+        )
+
+    def test_team_update_uses_correct_template(self):
+        response = self.client.get(self.TEAM_UPDATE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "employees/teams/team_form.html")
+
+    def test_team_update_post(self):
+        form_data = {"name": "Updated name"}
+        response = self.client.post(self.TEAM_UPDATE_URL, data=form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("employees:team-list"))
+        updated_team = Team.objects.get(slug=self.team.slug)
+        self.assertEqual(updated_team.name, form_data["name"])
+
+
+class PrivateTeamDeleteTests(BasePrivateTeamTests):
+    def setUp(self):
+        super().setUp()
+        self.team = Team.objects.create(
+            name="Test Project",
+        )
+        self.TEAM_DELETE_URL = reverse(
+            "employees:team-delete", kwargs={"slug": self.team.slug}
+        )
+
+    def test_team_delete_uses_correct_template(self):
+        response = self.client.get(self.TEAM_DELETE_URL)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "employees/teams/team_confirm_delete.html")
+
+    def test_team_delete_post(self):
+        response = self.client.post(self.TEAM_DELETE_URL)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("employees:team-list"))
+        deleted_team = Team.objects.filter(slug=self.team.slug)
+        self.assertEqual(len(deleted_team), 0)

@@ -1,9 +1,7 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Case, When, Value, IntegerField, Q, Count
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic import (

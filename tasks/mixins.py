@@ -1,5 +1,4 @@
-from django.db.models import Case, When, Value, Q
-from django.forms import IntegerField
+from django.db.models import Case, When, Q
 from django.views.generic import ListView
 
 from tasks.forms import ProjectSearchForm
