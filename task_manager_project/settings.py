@@ -90,7 +90,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 AUTHENTICATION_BACKENDS = [
     "employees.backends.EmailBackend",
-    "django.contrib.auth.backends.ModelBackend",
+    # "django.contrib.auth.backends.ModelBackend",
 ]
 
 # Database
