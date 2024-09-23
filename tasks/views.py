@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Case, When, Value, IntegerField, Q, Count
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
@@ -124,6 +125,8 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = "tasks/projects/project_confirm_delete.html"
+    success_url = reverse_lazy("tasks:project-list")
+
 
 
 # Task Views
@@ -154,23 +157,19 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     template_name = "tasks/task_detail.html"
     queryset = Task.objects
 
-
-@login_required
-def toggle_task_completion(request, slug):
-    task = get_object_or_404(Task, slug=slug)
-
-    if request.method == "POST":
-
-        task.is_completed = not task.is_completed
-
-        if task.is_completed:
-            task.completed_by = request.user
-        else:
+    def post(self, *args, **kwargs):
+        action = self.request.POST.get("action")
+        task = Task.objects.get(slug=self.kwargs["slug"])
+        if action == "complete" and not task.is_completed:
+            task.is_completed = True
+            task.completed_by = self.request.user
+            task.save()
+        if action == "open" and task.is_completed:
+            task.is_completed = False
             task.completed_by = None
+            task.save()
 
-        task.save()
-
-    return redirect(reverse("tasks:task-detail", kwargs={"slug": slug}))
+        return HttpResponseRedirect(reverse_lazy("tasks:task-detail", kwargs={"slug": task.slug}))
 
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
