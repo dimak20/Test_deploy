@@ -74,7 +74,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         project = form.save()
         project_url = reverse("tasks:project-detail", kwargs={"slug": project.slug})
         message = mark_safe(
-            f"<a style='text-decoration: underline;' href={project_url}>Project</a> created"
+            f"<a style='text-decoration: underline;' href='{project_url}'>Project</a> created"
         )
         messages.success(self.request, message)
         return super().form_valid(form)
