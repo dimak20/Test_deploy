@@ -39,7 +39,7 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
         context["user_teams"] = teams
 
         context["user_tasks"] = (
-            Task.objects.filter(assignees=self.request.user)
+            Task.objects.filter(assignees=self.request.user, is_completed=False)
             .distinct()
             .select_related("project")
             .order_by("deadline")
