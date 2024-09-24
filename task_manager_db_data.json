@@ -39,7 +39,7 @@
     "pk": 1,
     "fields": {
       "username": "johndoe",
-      "password": "pbkdf2_sha256$870000$t9eMqKmkBC26vrphAeeGxi$usdrNu/zp88XK+rYh1+ab9TsMU7JluOn7VZGAv5XjIg=",
+      "password": "pbkdf2_sha256$870000$zCdWIcMeraWe6WuGqkcN6w$aVjuXyDt8W0BUckdcyacPaulTf4o5cnOF6x4v6xg5Eo=",
       "email": "johndoe@email.com",
       "first_name": "John",
       "last_name": "Doe",
@@ -1068,6 +1068,208 @@
         2
       ],
       "slug": "create-icons-for-product-categories"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 31,
+    "fields": {
+      "name": "Define project milestones",
+      "description": "Set clear and achievable milestones for the project to track progress.",
+      "project": 1,
+      "deadline": "2024-09-30T12:00:00Z",
+      "is_completed": false,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1
+      ],
+      "slug": "define-project-milestones"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 32,
+    "fields": {
+      "name": "Team meeting on project timeline",
+      "description": "Schedule a meeting with the team to discuss project timelines and deadlines.",
+      "project": 2,
+      "deadline": "2024-10-02T12:00:00Z",
+      "is_completed": false,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        8
+      ],
+      "slug": "team-meeting-on-project-timeline"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 33,
+    "fields": {
+      "name": "Risk assessment report",
+      "description": "Complete a risk assessment report for potential challenges in the API development.",
+      "project": 3,
+      "deadline": "2024-10-05T12:00:00Z",
+      "is_completed": false,
+      "priority": "1",
+      "task_type": 2,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        3,
+        7
+      ],
+      "slug": "risk-assessment-report"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 34,
+    "fields": {
+      "name": "Approve backend architecture",
+      "description": "Review and approve the backend architecture before moving to the next phase.",
+      "project": 2,
+      "deadline": "2024-10-10T12:00:00Z",
+      "is_completed": false,
+      "priority": "2",
+      "task_type": 2,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        3
+      ],
+      "slug": "approve-backend-architecture"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 35,
+    "fields": {
+      "name": "Finalize budget allocation",
+      "description": "Finalize the budget allocation for the next sprint.",
+      "project": 1,
+      "deadline": "2024-09-28T12:00:00Z",
+      "is_completed": false,
+      "priority": "1",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        7
+      ],
+      "slug": "finalize-budget-allocation"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 36,
+    "fields": {
+      "name": "Update stakeholders on progress",
+      "description": "Send a status report to stakeholders on the progress of the project.",
+      "project": 3,
+      "deadline": "2024-10-01T12:00:00Z",
+      "is_completed": false,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        7
+      ],
+      "slug": "update-stakeholders-on-progress"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 37,
+    "fields": {
+      "name": "Review client feedback",
+      "description": "Review feedback from the client and suggest changes for the next sprint.",
+      "project": 2,
+      "deadline": "2024-09-29T12:00:00Z",
+      "is_completed": false,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        8
+      ],
+      "slug": "review-client-feedback"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 38,
+    "fields": {
+      "name": "Monitor team performance",
+      "description": "Regularly monitor the performance of the team to ensure deadlines are met.",
+      "project": 1,
+      "deadline": "2024-10-03T12:00:00Z",
+      "is_completed": false,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        7
+      ],
+      "slug": "monitor-team-performance"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 39,
+    "fields": {
+      "name": "Refine project requirements",
+      "description": "Refine and finalize the requirements for the API before development begins.",
+      "project": 3,
+      "deadline": "2024-09-30T12:00:00Z",
+      "is_completed": false,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        3,
+        7
+      ],
+      "slug": "refine-project-requirements"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 40,
+    "fields": {
+      "name": "Prepare project closure report",
+      "description": "Prepare the final closure report for the completed project.",
+      "project": 2,
+      "deadline": "2024-09-27T12:00:00Z",
+      "is_completed": false,
+      "priority": "1",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        7
+      ],
+      "slug": "prepare-project-closure-report"
     }
   }
 ]
