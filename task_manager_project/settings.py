@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     "task-manager-project-pw7u.onrender.com",
     "127.0.0.1",
     "localhost",
+    "test-deploy-6uh5.onrender.com"
 ]
 
 
