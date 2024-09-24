@@ -7,6 +7,8 @@ django-appconf==1.0.6
 django-debug-toolbar==4.4.6
 django-extensions==3.2.3
 django-select2==8.2.1
+gunicorn==23.0.0
+h11==0.14.0
 mypy-extensions==1.0.0
 packaging==24.1
 pathspec==0.12.1
@@ -15,4 +17,5 @@ psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 sqlparse==0.5.1
 tzdata==2024.1
+uvicorn==0.30.6
 whitenoise==6.7.0
