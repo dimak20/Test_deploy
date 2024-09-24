@@ -31,6 +31,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", "") != "False"
 
 ALLOWED_HOSTS = [
+    "https://task-manager-project-pw7u.onrender.com",
     "127.0.0.1",
     "localhost",
 ]
