@@ -1,0 +1,1073 @@
+[
+  {
+    "model": "employees.position",
+    "pk": 1,
+    "fields": {
+      "name": "Project Manager"
+    }
+  },
+  {
+    "model": "employees.position",
+    "pk": 2,
+    "fields": {
+      "name": "Backend Developer"
+    }
+  },
+  {
+    "model": "employees.position",
+    "pk": 3,
+    "fields": {
+      "name": "Frontend Developer"
+    }
+  },
+  {
+    "model": "employees.position",
+    "pk": 4,
+    "fields": {
+      "name": "QA Engineer"
+    }
+  },
+  {
+    "model": "employees.position",
+    "pk": 5,
+    "fields": {
+      "name": "UI Designer"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 1,
+    "fields": {
+      "username": "johndoe",
+      "password": "pbkdf2_sha256$870000$t9eMqKmkBC26vrphAeeGxi$usdrNu/zp88XK+rYh1+ab9TsMU7JluOn7VZGAv5XjIg=",
+      "email": "johndoe@email.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "position": 1,
+      "slug": "johndoe-john-doe"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 2,
+    "fields": {
+      "username": "thehulk",
+      "password": "pbkdf2_sha256$870000$EyhmFiq7Q5rtYjvoi1sJPv$PdZexvm1HaRnZgNyPJSxPUE0TITBTy0v5kIKGMgFnT8=",
+      "email": "thehulk@email.com",
+      "first_name": "Bruce",
+      "last_name": "Banner",
+      "position": 2,
+      "slug": "thehulk-bruce-banner"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 3,
+    "fields": {
+      "username": "ironman",
+      "password": "pbkdf2_sha256$870000$7KNSOYpXqEMYaLhUKsvqAM$YUi1kIZaBNuHjmNYWV5L2Gljgr/cSZ9atBtV85K9pv4=",
+      "email": "ironman@email.com",
+      "first_name": "Tony",
+      "last_name": "Stark",
+      "position": 2,
+      "slug": "ironman-tony-stark"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 4,
+    "fields": {
+      "username": "cptamerica",
+      "password": "pbkdf2_sha256$870000$hSEhZtpyNX9XE7CGN6qguO$rC9sJehbx6H9eaN+Yt5DCW75uQ8n+iVtcJzrKCLlvUs=",
+      "email": "cptamerica@email.com",
+      "first_name": "Steve",
+      "last_name": "Rogers",
+      "position": 3,
+      "slug": "cptamerica-steve-rogers"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 5,
+    "fields": {
+      "username": "thorodinson",
+      "password": "pbkdf2_sha256$870000$6PnyL3ZNVdbb9zOVd9y94Q$Lv8Uhw2As3OI7aHkgrx7LB5PXB1+5BUTux3UrYCuAZU=",
+      "email": "thorodinson@email.com",
+      "first_name": "Thor",
+      "last_name": "Odinson",
+      "position": 3,
+      "slug": "thorodinson-thor-odinson"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 6,
+    "fields": {
+      "username": "nickfury",
+      "password": "pbkdf2_sha256$870000$OpmAKcXMBWL3HFYhwAJxcu$o6RI9EGdHaS6PRrxLp2jwkOOb7/E+qUFveCxjRclhYk=",
+      "email": "nickfury@email.com",
+      "first_name": "Nick",
+      "last_name": "Fury",
+      "position": 4,
+      "slug": "nickfury-nick-fury"
+    }
+  },
+  {
+    "model": "employees.employee",
+    "pk": 7,
+    "fields": {
+      "username": "blackwidow",
+      "password": "pbkdf2_sha256$870000$hMraYGNUJVGvnoqvt1FOVY$0U5sTcqoT83hEt2D00A+gasmlsLO9KxEHWbo1MNcghU=",
+      "email": "blackwidow@email.com",
+      "first_name": "Natasha",
+      "last_name": "Romanoff",
+      "position": 5,
+      "slug": "blackwidow-natasha-romanoff"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 1,
+    "fields": {
+      "email": "thehulk@email.com",
+      "position": 2,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "backend-developer-2024-09-24-1200000000000000"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 2,
+    "fields": {
+      "email": "ironman@email.com",
+      "position": 2,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "backend-developer-2024-09-24-1200000000000001"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 3,
+    "fields": {
+      "email": "cptamerica@email.com",
+      "position": 3,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "frontend-developer-2024-09-24-1200000000000001"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 4,
+    "fields": {
+      "email": "thorodinson@email.com",
+      "position": 3,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "frontend-developer-2024-09-24-1200000000000000"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 5,
+    "fields": {
+      "email": "nickfury@email.com",
+      "position": 4,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "qa-engineer-2024-09-24-1200000000000000"
+    }
+  },
+  {
+    "model": "employees.invitation",
+    "pk": 6,
+    "fields": {
+      "email": "blackwidow@email.com",
+      "position": 5,
+      "invited_by": 1,
+      "created_at": "2024-09-24T12:00:00Z",
+      "is_accepted": true,
+      "slug": "ui-designer-2024-09-24-1200000000000000"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 1,
+    "fields": {
+      "name": "Management",
+      "members": [
+        1
+      ],
+      "slug": "management"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 2,
+    "fields": {
+      "name": "Back-end",
+      "members": [
+        2,
+        3
+      ],
+      "slug": "back-end"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 3,
+    "fields": {
+      "name": "Front-end",
+      "members": [
+        4,
+        5
+      ],
+      "slug": "front-end"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 4,
+    "fields": {
+      "name": "QA",
+      "members": [
+        6
+      ],
+      "slug": "qa"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 5,
+    "fields": {
+      "name": "UI",
+      "members": [
+        7
+      ],
+      "slug": "ui"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 6,
+    "fields": {
+      "name": "Task Manager",
+      "members": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "slug": "task-manager"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 7,
+    "fields": {
+      "name": "Checkout",
+      "members": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "slug": "checkout"
+    }
+  },
+  {
+    "model": "employees.team",
+    "pk": 8,
+    "fields": {
+      "name": "Store API",
+      "members": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "slug": "store-api"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 1,
+    "fields": {
+      "name": "Story"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 2,
+    "fields": {
+      "name": "Refactor"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 3,
+    "fields": {
+      "name": "QA"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 4,
+    "fields": {
+      "name": "Bug Fix"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 1,
+    "fields": {
+      "name": "new_feature"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 2,
+    "fields": {
+      "name": "design"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 3,
+    "fields": {
+      "name": "back-end"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 4,
+    "fields": {
+      "name": "front_end"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 5,
+    "fields": {
+      "name": "qa"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 6,
+    "fields": {
+      "name": "regression"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 7,
+    "fields": {
+      "name": "prod"
+    }
+  },
+  {
+    "model": "tasks.tasktag",
+    "pk": 8,
+    "fields": {
+      "name": "dev"
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 1,
+    "fields": {
+      "name": "Task Manager",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras accumsan lectus vel elit fermentum, id convallis nunc scelerisque. Integer in sagittis libero. Maecenas at nisi at dolor gravida rutrum. Sed et dictum nunc. Nulla facilisi. Curabitur sed elit tincidunt, tincidunt nulla vel, interdum risus. Morbi tristique auctor ligula nec cursus. Nulla sit amet arcu id velit vestibulum pharetra. Pellentesque sed erat sapien. Mauris sit amet dui ut magna tincidunt pretium eu a erat.",
+      "teams": [
+        6
+      ],
+      "created_at": "2024-09-24T12:00:00Z",
+      "slug": "task-manager"
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 2,
+    "fields": {
+      "name": "Checkout plugin",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras accumsan lectus vel elit fermentum, id convallis nunc scelerisque. Integer in sagittis libero. Maecenas at nisi at dolor gravida rutrum. Sed et dictum nunc. Nulla facilisi. Curabitur sed elit tincidunt, tincidunt nulla vel, interdum risus. Morbi tristique auctor ligula nec cursus. Nulla sit amet arcu id velit vestibulum pharetra. Pellentesque sed erat sapien. Mauris sit amet dui ut magna tincidunt pretium eu a erat.",
+      "teams": [
+        7
+      ],
+      "created_at": "2024-09-24T12:00:00Z",
+      "slug": "checkout-plugin"
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 3,
+    "fields": {
+      "name": "Online store API",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras accumsan lectus vel elit fermentum, id convallis nunc scelerisque. Integer in sagittis libero. Maecenas at nisi at dolor gravida rutrum. Sed et dictum nunc. Nulla facilisi. Curabitur sed elit tincidunt, tincidunt nulla vel, interdum risus. Morbi tristique auctor ligula nec cursus. Nulla sit amet arcu id velit vestibulum pharetra. Pellentesque sed erat sapien. Mauris sit amet dui ut magna tincidunt pretium eu a erat.",
+      "teams": [
+        8
+      ],
+      "created_at": "2024-09-24T12:00:00Z",
+      "slug": "online-store-api"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "name": "Define project scope and objectives",
+      "description": "Detailed description of the scope and objectives for the Task Manager project.",
+      "project": 1,
+      "deadline": "2024-10-15T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 1,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1,
+        8
+      ],
+      "slug": "define-project-scope-and-objectives"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "name": "Manage sprint planning and review meetings",
+      "description": "Organizing and overseeing sprint planning and review meetings for the Task Manager project.",
+      "project": 1,
+      "deadline": "2024-10-20T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1
+      ],
+      "slug": "manage-sprint-planning-and-review-meetings"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "name": "Implement user authentication module",
+      "description": "Developing the user authentication system for the Task Manager project.",
+      "project": 1,
+      "deadline": "2024-10-10T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 2,
+      "priority": "1",
+      "task_type": 1,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "implement-user-authentication-module"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 4,
+    "fields": {
+      "name": "Design database schema for task management",
+      "description": "Create and optimize the database schema for the Task Manager.",
+      "project": 1,
+      "deadline": "2024-10-25T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "2",
+      "task_type": 2,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "design-database-schema-for-task-management"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 5,
+    "fields": {
+      "name": "Develop task creation UI",
+      "description": "Design and implement the UI for creating new tasks.",
+      "project": 1,
+      "deadline": "2024-10-18T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 3,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "develop-task-creation-ui"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 6,
+    "fields": {
+      "name": "Implement drag-and-drop task management",
+      "description": "Develop drag-and-drop functionality for task management.",
+      "project": 1,
+      "deadline": "2024-10-25T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "implement-drag-and-drop-task-management"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 7,
+    "fields": {
+      "name": "Write test cases for task creation feature",
+      "description": "QA for task creation, ensuring all cases are covered.",
+      "project": 1,
+      "deadline": "2024-10-12T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 4,
+      "priority": "2",
+      "task_type": 3,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        8
+      ],
+      "slug": "write-test-cases-for-task-creation-feature"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 8,
+    "fields": {
+      "name": "Perform regression testing for task management system",
+      "description": "Ensuring no new bugs introduced by recent updates to the task manager system.",
+      "project": 1,
+      "deadline": "2024-10-22T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 4,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        6
+      ],
+      "slug": "perform-regression-testing-for-task-management-system"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 9,
+    "fields": {
+      "name": "Design the task management dashboard",
+      "description": "Create wireframes and visual design for the dashboard.",
+      "project": 1,
+      "deadline": "2024-10-08T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 5,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "design-the-task-management-dashboard"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 10,
+    "fields": {
+      "name": "Create icon set for task statuses",
+      "description": "Develop icons representing task statuses.",
+      "project": 1,
+      "deadline": "2024-10-20T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "4",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "create-icon-set-for-task-statuses"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 11,
+    "fields": {
+      "name": "Outline project objectives and features",
+      "description": "Define the features and objectives for the Checkout Plugin project.",
+      "project": 2,
+      "deadline": "2024-10-12T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 1,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1,
+        8
+      ],
+      "slug": "outline-project-objectives-and-features"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 12,
+    "fields": {
+      "name": "Prepare project roadmap and milestones",
+      "description": "Manage the timeline and roadmap for the Checkout Plugin.",
+      "project": 2,
+      "deadline": "2024-10-22T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1
+      ],
+      "slug": "prepare-project-roadmap-and-milestones"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 13,
+    "fields": {
+      "name": "Build API integration for payment gateway",
+      "description": "Develop the backend integration for the payment gateway.",
+      "project": 2,
+      "deadline": "2024-10-10T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 2,
+      "priority": "1",
+      "task_type": 1,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "build-api-integration-for-payment-gateway"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 14,
+    "fields": {
+      "name": "Refactor payment processing module",
+      "description": "Refactor the existing code for payment processing.",
+      "project": 2,
+      "deadline": "2024-10-25T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "2",
+      "task_type": 2,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "refactor-payment-processing-module"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 15,
+    "fields": {
+      "name": "Design checkout flow",
+      "description": "Develop the user interface for the checkout flow.",
+      "project": 2,
+      "deadline": "2024-10-15T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 3,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "design-checkout-flow"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 16,
+    "fields": {
+      "name": "Optimize frontend for mobile responsiveness",
+      "description": "Make sure the checkout page is optimized for mobile devices.",
+      "project": 2,
+      "deadline": "2024-10-28T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "optimize-frontend-for-mobile-responsiveness"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 17,
+    "fields": {
+      "name": "Create test cases for payment flow",
+      "description": "Write and execute test cases for payment flow.",
+      "project": 2,
+      "deadline": "2024-10-18T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 4,
+      "priority": "2",
+      "task_type": 3,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        8
+      ],
+      "slug": "create-test-cases-for-payment-flow"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 18,
+    "fields": {
+      "name": "Perform regression testing for checkout system",
+      "description": "Ensure recent changes do not break existing functionality.",
+      "project": 2,
+      "deadline": "2024-10-30T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 4,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        6
+      ],
+      "slug": "perform-regression-testing-for-checkout-system"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 19,
+    "fields": {
+      "name": "Design the checkout page UI",
+      "description": "Design the visual interface for the checkout page.",
+      "project": 2,
+      "deadline": "2024-10-12T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 5,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "design-the-checkout-page-ui"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 20,
+    "fields": {
+      "name": "Create icons for payment methods",
+      "description": "Develop icons for the various payment methods supported.",
+      "project": 2,
+      "deadline": "2024-10-25T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "4",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "create-icons-for-payment-methods"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 21,
+    "fields": {
+      "name": "Define API requirements and features",
+      "description": "Set clear objectives for the Online Store API.",
+      "project": 3,
+      "deadline": "2024-10-11T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 1,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1,
+        8
+      ],
+      "slug": "define-api-requirements-and-features"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 22,
+    "fields": {
+      "name": "Plan API versioning strategy",
+      "description": "Outline a versioning strategy for the Online Store API.",
+      "project": 3,
+      "deadline": "2024-10-20T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        1
+      ],
+      "tags": [
+        1
+      ],
+      "slug": "plan-api-versioning-strategy"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 23,
+    "fields": {
+      "name": "Develop API endpoints for product management",
+      "description": "Create API endpoints for managing products in the store.",
+      "project": 3,
+      "deadline": "2024-10-15T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 2,
+      "priority": "1",
+      "task_type": 1,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "develop-api-endpoints-for-product-management"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 24,
+    "fields": {
+      "name": "Refactor authentication middleware",
+      "description": "Improve and refactor authentication middleware for the API.",
+      "project": 3,
+      "deadline": "2024-10-25T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "2",
+      "task_type": 2,
+      "assignees": [
+        2
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "slug": "refactor-authentication-middleware"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 25,
+    "fields": {
+      "name": "Create product listing frontend",
+      "description": "Develop the frontend for the product listing page.",
+      "project": 3,
+      "deadline": "2024-10-18T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 3,
+      "priority": "2",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "create-product-listing-frontend"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 26,
+    "fields": {
+      "name": "Improve frontend responsiveness",
+      "description": "Make the product listing page responsive on mobile devices.",
+      "project": 3,
+      "deadline": "2024-10-30T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "tags": [
+        4
+      ],
+      "slug": "improve-frontend-responsiveness"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 27,
+    "fields": {
+      "name": "Perform QA on product management API",
+      "description": "Execute test cases on the product management API.",
+      "project": 3,
+      "deadline": "2024-10-17T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 4,
+      "priority": "2",
+      "task_type": 3,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        8
+      ],
+      "slug": "perform-qa-on-product-management-api"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 28,
+    "fields": {
+      "name": "Perform regression testing on the entire API",
+      "description": "Ensure that no changes break existing functionality in the API.",
+      "project": 3,
+      "deadline": "2024-10-29T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "3",
+      "task_type": 4,
+      "assignees": [
+        4
+      ],
+      "tags": [
+        5,
+        6
+      ],
+      "slug": "perform-regression-testing-on-the-entire-api"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 29,
+    "fields": {
+      "name": "Design product listing page UI",
+      "description": "Design the visual interface for the product listing page.",
+      "project": 3,
+      "deadline": "2024-10-13T12:00:00Z",
+      "is_completed": true,
+      "completed_by": 5,
+      "priority": "3",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "design-product-listing-page-ui"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 30,
+    "fields": {
+      "name": "Create icons for product categories",
+      "description": "Develop icons for various product categories in the store.",
+      "project": 3,
+      "deadline": "2024-10-23T12:00:00Z",
+      "is_completed": false,
+      "completed_by": null,
+      "priority": "4",
+      "task_type": 1,
+      "assignees": [
+        5
+      ],
+      "tags": [
+        2
+      ],
+      "slug": "create-icons-for-product-categories"
+    }
+  }
+]
