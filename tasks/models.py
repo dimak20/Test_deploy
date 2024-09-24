@@ -31,7 +31,7 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL, related_name="tasks", blank=True
     )
     tags = models.ManyToManyField("TaskTag", blank=True)
-    slug = AutoSlugField(populate_from=["name"], unique=True)
+    slug = AutoSlugField(populate_from=["name"], unique=True, max_length=100)
 
     class Meta:
         ordering = ("is_completed", "priority", "-deadline", "name")
